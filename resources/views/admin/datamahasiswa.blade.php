@@ -19,49 +19,50 @@
                         </a>
                     </div>
 
-                    <table class="min-w-full border-collapse table-auto">
-                        <thead>
-                            <tr>
-                            <th class="px-4 py-2 border-b">Kode Unik</th>
-                                <th class="px-4 py-2 border-b">Nama</th>
-                                <th class="px-4 py-2 border-b">Email</th>
-                                <th class="px-4 py-2 border-b">NIM</th>
-                                <th class="px-4 py-2 border-b">Program Studi</th>
-                                <th class="px-4 py-2 border-b">Kehadiran</th>
-                                <th class="px-4 py-2 border-b">Check In</th>
-                                <th class="px-4 py-2 border-b">Status</th>
-                                <th class="px-4 py-2 border-b">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table-body">
-                            @foreach($registrations as $registration)
-                                <tr>
-                                <td class="px-4 py-2 border-b">{{ $registration->kode_unik }}</td>
-                                    <td class="px-4 py-2 border-b">{{ $registration->name }}</td>
-                                    <td class="px-4 py-2 border-b">{{ $registration->email }}</td>
-                                    <td class="px-4 py-2 border-b">{{ $registration->nim }}</td>
-                                    <td class="px-4 py-2 border-b">{{ $registration->program_studi }}</td>
-                                    <td class="px-4 py-2 border-b">{{ $registration->graduation_type }}</td>
-                                    <td class="px-4 py-2 border-b">{{ $registration->checked_in }}</td>
-                                    <td class="px-4 py-2 border-b">
-                                        <span class="inline-block px-2 py-1 text-sm font-semibold rounded-full 
-                                            {{ $registration->status == 'approved' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800' }}">
-                                            {{ ucfirst($registration->status) }}
-                                        </span>
-                                    </td>
-
-                                    <td class="px-4 py-2 border-b">
-                                        <form action="{{ route('admin.approve', $registration->id) }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" name="status" value="approved" class="px-4 py-2 bg-green-500 text-black rounded">Approve</button>
-                                        </form>
-                                        <a href="{{ route('admin.details', $registration->id) }}" class="ml-2 px-4 py-2 bg-blue text-black rounded">Detail</a>
-                                    </td>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full border-collapse table-auto">
+                            <thead>
+                                <tr class="bg-gray-100 text-black">
+                                    <th class="px-4 py-2 border-b">Kode Unik</th>
+                                    <th class="px-4 py-2 border-b">Nama</th>
+                                    <th class="px-4 py-2 border-b">Email</th>
+                                    <th class="px-4 py-2 border-b">NIM</th>
+                                    <th class="px-4 py-2 border-b">Program Studi</th>
+                                    <th class="px-4 py-2 border-b">Kehadiran</th>
+                                    <th class="px-4 py-2 border-b">Check In</th>
+                                    <th class="px-4 py-2 border-b">Status</th>
+                                    <th class="px-4 py-2 border-b">Action</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody id="table-body">
+                                @foreach($registrations as $index => $registration)
+                                    <tr class="{{ $index % 2 == 0 ? 'bg-blue-100' : 'bg-white' }}">
+                                        <td class="px-4 py-2 border-b">{{ $registration->kode_unik }}</td>
+                                        <td class="px-4 py-2 border-b">{{ $registration->name }}</td>
+                                        <td class="px-4 py-2 border-b">{{ $registration->email }}</td>
+                                        <td class="px-4 py-2 border-b">{{ $registration->nim }}</td>
+                                        <td class="px-4 py-2 border-b">{{ $registration->program_studi }}</td>
+                                        <td class="px-4 py-2 border-b">{{ $registration->graduation_type }}</td>
+                                        <td class="px-4 py-2 border-b">{{ $registration->checked_in }}</td>
+                                        <td class="px-4 py-2 border-b">
+                                            <span class="inline-block px-2 py-1 text-sm font-semibold rounded-full 
+                                                {{ $registration->status == 'approved' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800' }}">
+                                                {{ ucfirst($registration->status) }}
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-2 border-b">
+                                            <form action="{{ route('admin.approve', $registration->id) }}" method="POST" class="inline">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" name="status" value="approved" class="px-4 py-2 bg-green-500 text-black rounded">Approve</button>
+                                            </form>
+                                            <a href="{{ route('admin.details', $registration->id) }}" class="ml-2 px-4 py-2 bg-blue-500 text-black rounded">Detail</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
 
                     <div class="mt-4">
                         {{ $registrations->links() }}
@@ -76,9 +77,9 @@
             let searchQuery = this.value.toLowerCase();
             let rows = document.querySelectorAll('#table-body tr');
             rows.forEach(function(row) {
-                let name = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
-                let email = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                let nim = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                let name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                let email = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                let nim = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
 
                 if (name.includes(searchQuery) || email.includes(searchQuery) || nim.includes(searchQuery)) {
                     row.style.display = '';
