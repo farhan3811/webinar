@@ -26,7 +26,7 @@
                                     <th class="px-4 py-2 border-b">Kehadiran</th>
                                     <th class="px-4 py-2 border-b">Check In</th>
                                     <th class="px-4 py-2 border-b">Status</th>
-                                    <th class="px-4 py-2 border-b">Action</th>
+                                    <th class="px-4 py-2 border-b">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="table-body">
