@@ -38,7 +38,9 @@ Route::post('admin/check-in/{nim}', [AdminController::class, 'checkIn'])->name('
 Route::get('admin/scan-qr', [AdminController::class, 'scanQr'])
     ->middleware('auth')
     ->name('admin.scanQr');
-    Route::get('/datamahasiswa', [AdminController::class, 'dataMahasiswa'])->name('datamahasiswa');
+    Route::get('/datamahasiswa', [AdminController::class, 'dataMahasiswa'])
+    ->middleware('auth')
+    ->name('datamahasiswa');
     Route::put('/admin/update-status/{id}', [AdminController::class, 'updateStatus'])->name('admin.updateStatus');
     Route::get('/admin/details/{id}', [AdminController::class, 'showDetails'])->name('admin.details');
     Route::get('/admin/export-excel', [AdminController::class, 'exportExcel'])->name('admin.exportExcel');
