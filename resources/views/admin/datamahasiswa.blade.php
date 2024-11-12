@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('DataMahasiswa') }}
+            {{ __('Data Mahasiswa') }}
         </h2>
     </x-slot>
 
@@ -27,7 +27,7 @@
                                 <th class="px-4 py-2 border-b">NIM</th>
                                 <th class="px-4 py-2 border-b">Program Studi</th>
                                 <th class="px-4 py-2 border-b">Kehadiran</th>
-                                <th class="px-4 py-2 border-b">Status</th>
+                                <th class="px-4 py-2 border-b">Check In</th>
                                 <th class="px-4 py-2 border-b">Status</th>
                                 <th class="px-4 py-2 border-b">Action</th>
                             </tr>
@@ -39,7 +39,7 @@
                                     <td class="px-4 py-2 border-b">{{ $registration->email }}</td>
                                     <td class="px-4 py-2 border-b">{{ $registration->nim }}</td>
                                     <td class="px-4 py-2 border-b">{{ $registration->program_studi }}</td>
-                                    <td class="px-4 py-2 border-b">{{ $registration->attendance_type }}</td>
+                                    <td class="px-4 py-2 border-b">{{ $registration->graduation_type }}</td>
                                     <td class="px-4 py-2 border-b">{{ $registration->checked_in }}</td>
                                     <td class="px-4 py-2 border-b">
                                         <span class="inline-block px-2 py-1 text-sm font-semibold rounded-full 

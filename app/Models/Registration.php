@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Registration extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'name',
         'phone',
@@ -20,9 +21,12 @@ class Registration extends Model
         'postal_code',
         'attendance_type', 
         'number_of_guests',
+        'graduation_type',
         'toga_size',
-        'file_path',
+        'graduation_payment_file',
+        'family_payment_file', 
         'status',
         'checked_in',
+        'delivery',
     ];
 }
