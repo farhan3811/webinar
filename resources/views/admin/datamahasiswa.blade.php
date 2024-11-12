@@ -22,6 +22,7 @@
                     <table class="min-w-full border-collapse table-auto">
                         <thead>
                             <tr>
+                            <th class="px-4 py-2 border-b">Kode Unik</th>
                                 <th class="px-4 py-2 border-b">Nama</th>
                                 <th class="px-4 py-2 border-b">Email</th>
                                 <th class="px-4 py-2 border-b">NIM</th>
@@ -35,6 +36,7 @@
                         <tbody id="table-body">
                             @foreach($registrations as $registration)
                                 <tr>
+                                <td class="px-4 py-2 border-b">{{ $registration->kode_unik }}</td>
                                     <td class="px-4 py-2 border-b">{{ $registration->name }}</td>
                                     <td class="px-4 py-2 border-b">{{ $registration->email }}</td>
                                     <td class="px-4 py-2 border-b">{{ $registration->nim }}</td>

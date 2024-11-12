@@ -27,6 +27,7 @@ class Registration extends Model
         'family_payment_file', 
         'status',
         'checked_in',
+        'kode_unik',
         'delivery',
     ];
 }

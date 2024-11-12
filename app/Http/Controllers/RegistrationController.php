@@ -11,7 +11,6 @@ class RegistrationController extends Controller
     {
         return view('registration.form');
     }
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -227,7 +226,7 @@ class RegistrationController extends Controller
             $familyPaymentPath = $request->file('family_payment_file')->store('bukti_pembayaran/keluarga');
             $registration->family_payment_file = $familyPaymentPath;
         }
-
+        $registration->kode_unik = 'WD' . str_pad(Registration::max('id') + 1, 3, '0', STR_PAD_LEFT);
         $registration->save();
 
         return back()->with('success', 'Pendaftaran berhasil!');
