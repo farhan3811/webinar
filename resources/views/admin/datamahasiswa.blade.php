@@ -7,9 +7,9 @@
                     <div class="flex mb-4">
                         <input type="text" id="search" class="form-input w-1/3" placeholder="Cari Mahasiswa..." />
                         <form action="{{ route('admin.exportExcel') }}" method="GET" class="ml-4 inline">
-                            <button type="submit" class="px-4 py-2 bg-blue-500 text-black rounded">Export Excel</button>
+                            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Export Excel</button>
                         </form>
-                        <a href="{{ route('admin.scanQr') }}" class="ml-4 px-4 py-2 bg-indigo-500 text-black rounded">
+                        <a href="{{ route('admin.scanQr') }}" class="ml-4 px-4 py-2 bg-rose-500 text-white rounded">
                             Scan QR
                         </a>
                     </div>
@@ -17,7 +17,7 @@
                     <div class="overflow-x-auto">
                         <table class="min-w-full border-collapse table-auto">
                             <thead>
-                                <tr class="bg-gray-100 text-black">
+                                <tr class="bg-sky-800 text-white font-medium">
                                     <th class="px-4 py-2 border-b">Kode Unik</th>
                                     <th class="px-4 py-2 border-b">Nama</th>
                                     <th class="px-4 py-2 border-b">Email</th>
@@ -31,7 +31,7 @@
                             </thead>
                             <tbody id="table-body">
                                 @foreach($registrations as $index => $registration)
-                                    <tr class="{{ $index % 2 == 0 ? 'bg-blue-100' : 'bg-white' }}">
+                                    <tr class="{{ $index % 2 == 0 ? 'bg-white' : 'bg-sky-100' }}">
                                         <td class="px-4 py-2 border-b">{{ $registration->kode_unik }}</td>
                                         <td class="px-4 py-2 border-b">{{ $registration->name }}</td>
                                         <td class="px-4 py-2 border-b">{{ $registration->email }}</td>
@@ -45,13 +45,13 @@
                                                 {{ ucfirst($registration->status) }}
                                             </span>
                                         </td>
-                                        <td class="px-4 py-2 border-b">
+                                        <td class="flex px-4 py-2 border-b">
                                             <form action="{{ route('admin.approve', $registration->id) }}" method="POST" class="inline">
                                                 @csrf
                                                 @method('PUT')
-                                                <button type="submit" name="status" value="approved" class="px-4 py-2 bg-green-500 text-black rounded">Approve</button>
+                                                <button type="submit" name="status" value="approved" class="px-4 py-2 bg-green-500 text-white rounded">Approve</button>
                                             </form>
-                                            <a href="{{ route('admin.details', $registration->id) }}" class="ml-2 px-4 py-2 bg-blue-500 text-black rounded">Detail</a>
+                                            <a href="{{ route('admin.details', $registration->id) }}" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded">Detail</a>
                                         </td>
                                     </tr>
                                 @endforeach
