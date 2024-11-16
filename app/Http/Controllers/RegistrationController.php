@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Registration;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Session;
 
 class RegistrationController extends Controller
 {
@@ -17,7 +14,7 @@ class RegistrationController extends Controller
     
     public function store(Request $request)
     {
-        $allowedNims = Config::get('allowed_nims');
+        $allowedNims = config('allowed_nims');
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -65,5 +62,18 @@ class RegistrationController extends Controller
         $registration->save();
 
         return back()->with('success', 'Pendaftaran berhasil!');
+    }
+
+    public function dashboard()
+    {
+        $totalPendaftar = Registration::count();
+        $totalApproved = Registration::where('status', 'approved')->count(); // Approved
+        $totalCheckIn = Registration::where('checked_in', true)->count(); // Check-in
+
+        return view('dashboard', [
+            'totalPendaftar' => $totalPendaftar,
+            'totalApproved' => $totalApproved,
+            'totalCheckIn' => $totalCheckIn,
+        ]);
     }
 }
