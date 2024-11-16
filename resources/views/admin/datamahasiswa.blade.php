@@ -38,7 +38,6 @@
                                         <td class="px-4 py-2 border-b">{{ $registration->nim }}</td>
                                         <td class="px-4 py-2 border-b">{{ $registration->program_studi }}</td>
                                         <td class="px-4 py-2 border-b">{{ $registration->graduation_type }}</td>
-                                        <td class="px-4 py-2 border-b">{{ $registration->checked_in }}</td>
                                         <td class="px-4 py-2 border-b">
                                             <span class="inline-block px-2 py-1 text-sm font-semibold rounded-full 
                                                 {{ $registration->status == 'approved' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800' }}">
@@ -52,6 +51,7 @@
                                                 <button type="submit" name="status" value="approved" class="px-4 py-2 bg-green-500 text-white rounded">Approve</button>
                                             </form>
                                             <a href="{{ route('admin.details', $registration->id) }}" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded">Detail</a>
+                                            <a href="{{ route('admin.details', $registration->id) }}" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded">Edit</a>
                                         </td>
                                     </tr>
                                 @endforeach
