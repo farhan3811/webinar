@@ -30,6 +30,7 @@ class Registration extends Model
         'kode_unik',
         'delivery',
         'check_in_date',
+        'pendamping',
     ];
     protected $casts = [
         'check_in_date' => 'datetime',
