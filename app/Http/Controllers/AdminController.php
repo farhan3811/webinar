@@ -29,17 +29,17 @@ class AdminController extends Controller
         $registration = Registration::findOrFail($id);
         $registration->status = 'approved';
         $registration->save();
-    
+
         $qrData = [
             'nim' => $registration->nim,
             'name' => $registration->name,
             'email' => $registration->email,
         ];
-    
+
         $qrString = json_encode($qrData);
         $tempFilePath = storage_path('app/public/qr_codes/' . $registration->nim . '.png');
         QrCode::format('png')->size(400)->generate($qrString, $tempFilePath);
-    
+
         try {
             Mail::to($registration->email)->send(new RegistrationApproved($registration, $tempFilePath));
             EmailLog::create([
@@ -57,7 +57,7 @@ class AdminController extends Controller
             ]);
             Log::error('Gagal mengirim email ke ' . $registration->email . ': ' . $e->getMessage());
         }
-    
+
         return redirect()->route('datamahasiswa')->with('success', 'Pendaftaran berhasil diapprove.');
     }
     public function scanQr()
@@ -71,14 +71,32 @@ class AdminController extends Controller
         if ($registration) {
             if ($registration->status === 'approved' && !$registration->checked_in) {
                 $registration->checked_in = true;
+                $registration->check_in_date = now();
                 $registration->save();
 
-                return response()->json(['success' => true]);
+                return response()->json(['success' => true, 'message' => 'Check-in berhasil!']);
             }
         }
 
-        return response()->json(['success' => false], 400);
+        return response()->json(['success' => false, 'message' => 'Check-in gagal!'], 400);
     }
+    public function dataCheckIn(Request $request)
+    {
+        $search = $request->get('search'); 
+    
+        $checkIns = Registration::query()
+            ->where('checked_in', true)
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('nim', 'like', '%' . $search . '%')
+                    ->orWhere('kode_unik', 'like', '%' . $search . '%');
+            })
+            ->orderBy('check_in_date', 'desc')
+            ->paginate(10);
+    
+        return view('admin.data-checkin', compact('checkIns'));
+    }
+    
     public function dataMahasiswa(Request $request)
     {
         $search = $request->get('search');
@@ -97,7 +115,7 @@ class AdminController extends Controller
         $logs = EmailLog::orderBy('created_at', 'desc')->paginate(10);
         return view('admin.email-logs', compact('logs'));
     }
-    
+
     public function updateStatus(Request $request, $id)
     {
         $registration = Registration::findOrFail($id);

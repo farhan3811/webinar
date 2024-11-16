@@ -29,5 +29,9 @@ class Registration extends Model
         'checked_in',
         'kode_unik',
         'delivery',
+        'check_in_date',
+    ];
+    protected $casts = [
+        'check_in_date' => 'datetime',
     ];
 }

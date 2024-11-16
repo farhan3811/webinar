@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Registration;
+use Illuminate\Validation\Rule;
 
 class RegistrationController extends Controller
 {
@@ -31,8 +32,8 @@ class RegistrationController extends Controller
             'graduation_type' => 'required|string|in:online,onsite',
             'toga_size' => 'required|string|in:S,M,L,XL,XXL',
             'delivery' => 'required|string|in:Dikirim,Ambil Dikampus Universitas Siber Asia',
-            'graduation_payment_file' => 'required|file|mimes:jpg,png,pdf|max:10240',
-            'family_payment_file' => 'nullable|file|mimes:jpg,png,pdf|max:10240',
+            'graduation_payment_file' => 'required|file|mimes:jpg,png,jpeg|max:10240',
+            'family_payment_file' => 'nullable|file|mimes:jpg,png,jpeg|max:10240',
         ]);
 
         if ($request->delivery === 'Dikirim') {

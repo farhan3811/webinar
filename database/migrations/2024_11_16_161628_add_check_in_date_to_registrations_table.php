@@ -12,21 +12,15 @@ return new class extends Migration
     public function up()
     {
         Schema::table('registrations', function (Blueprint $table) {
-            if (!Schema::hasColumn('registrations', 'checked_in')) {
-                $table->boolean('checked_in')->default(false)->after('status');
-            }
+            $table->timestamp('check_in_date')->nullable()->after('checked_in');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down()
     {
         Schema::table('registrations', function (Blueprint $table) {
-            if (Schema::hasColumn('registrations', 'checked_in')) {
-                $table->dropColumn('checked_in');
-            }
+            $table->dropColumn('check_in_date');
         });
     }
+    
 };

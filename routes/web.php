@@ -48,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
     // Data mahasiswa
     Route::get('/datamahasiswa', [AdminController::class, 'dataMahasiswa'])->name('datamahasiswa');
 });
-
+Route::get('/admin/data-checkin', [AdminController::class, 'dataCheckIn'])->name('data-checkin');
 // Route untuk gambar
 Route::get('/gambar/{filename}', function ($filename) {
     $path = storage_path('app/images/' . $filename);
