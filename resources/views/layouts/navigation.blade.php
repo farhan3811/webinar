@@ -90,10 +90,10 @@
             <x-responsive-nav-link :href="route('datamahasiswa')" :active="request()->routeIs('datamahasiswa')">
                 {{ __('Data Mahasiswa') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('datamahasiswa')" :active="request()->routeIs('datamahasiswa')">
+            <x-responsive-nav-link :href="route('data-checkin')" :active="request()->routeIs('data-checkin')">
                 {{ __('Data Check In') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('datamahasiswa')" :active="request()->routeIs('datamahasiswa')">
+            <x-responsive-nav-link :href="route('admin.emailLogs')" :active="request()->routeIs('admin.emailLogs')">
                 {{ __('Log Pengiriman Email') }}
             </x-responsive-nav-link>
         </div>
