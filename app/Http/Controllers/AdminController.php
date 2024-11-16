@@ -115,7 +115,15 @@ class AdminController extends Controller
         $logs = EmailLog::orderBy('created_at', 'desc')->paginate(10);
         return view('admin.email-logs', compact('logs'));
     }
-
+    public function bulkApprove(Request $request)
+    {
+        $ids = $request->input('ids');
+        Registration::whereIn('id', $ids)->update(['status' => 'approved']);
+    
+        return response()->json(['success' => true]);
+    }
+    
+    
     public function updateStatus(Request $request, $id)
     {
         $registration = Registration::findOrFail($id);

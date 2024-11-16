@@ -16,11 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route untuk pendaftaran
 Route::get('registration', [RegistrationController::class, 'showForm']);
 Route::post('registration', [RegistrationController::class, 'store'])->name('registration.store');
 
-// Route untuk welcome page
 Route::get('/', function () {
     return view('welcome');
 });
@@ -34,7 +32,6 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Admin routes
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('index');
         Route::put('/approve/{id}', [AdminController::class, 'approve'])->name('approve');
@@ -44,12 +41,11 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/update-status/{id}', [AdminController::class, 'updateStatus'])->name('updateStatus');
         Route::get('/export-excel', [AdminController::class, 'exportExcel'])->name('exportExcel');
     });
+    Route::post('/admin/bulk-approve', [AdminController::class, 'bulkApprove'])->name('admin.bulkApprove');
 
-    // Data mahasiswa
     Route::get('/datamahasiswa', [AdminController::class, 'dataMahasiswa'])->name('datamahasiswa');
 });
 Route::get('/admin/data-checkin', [AdminController::class, 'dataCheckIn'])->name('data-checkin');
-// Route untuk gambar
 Route::get('/gambar/{filename}', function ($filename) {
     $path = storage_path('app/images/' . $filename);
 
@@ -64,5 +60,4 @@ Route::get('/gambar/{filename}', function ($filename) {
 });
 Route::get('/admin/email-logs', [AdminController::class, 'emailLogs'])->name('admin.emailLogs');
 
-// Include auth routes
 require __DIR__ . '/auth.php';

@@ -1,5 +1,4 @@
 <x-app-layout>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -12,19 +11,22 @@
                         <a href="{{ route('admin.scanQr') }}" class="ml-4 px-4 py-2 bg-rose-500 text-white rounded">
                             Scan QR
                         </a>
+                        <button onclick="approveSelected()" class="px-4 py-2 bg-green-500 text-white rounded ml-4">Approve All</button>
                     </div>
 
                     <div class="overflow-x-auto">
                         <table class="min-w-full border-collapse table-auto">
                             <thead>
                                 <tr class="bg-sky-800 text-white font-medium">
+                                    <th class="px-4 py-2 border-b">
+                                        <input type="checkbox" id="select-all" onclick="toggleSelectAll(this)" />
+                                    </th>
                                     <th class="px-4 py-2 border-b">Kode Unik</th>
                                     <th class="px-4 py-2 border-b">Nama</th>
                                     <th class="px-4 py-2 border-b">Email</th>
                                     <th class="px-4 py-2 border-b">NIM</th>
                                     <th class="px-4 py-2 border-b">Program Studi</th>
                                     <th class="px-4 py-2 border-b">Kehadiran</th>
-                                    <th class="px-4 py-2 border-b">Check In</th>
                                     <th class="px-4 py-2 border-b">Status</th>
                                     <th class="px-4 py-2 border-b">Aksi</th>
                                 </tr>
@@ -32,6 +34,9 @@
                             <tbody id="table-body">
                                 @foreach($registrations as $index => $registration)
                                     <tr class="{{ $index % 2 == 0 ? 'bg-white' : 'bg-sky-100' }}">
+                                        <td class="px-4 py-2 border-b">
+                                            <input type="checkbox" class="select-checkbox" value="{{ $registration->id }}" />
+                                        </td>
                                         <td class="px-4 py-2 border-b">{{ $registration->kode_unik }}</td>
                                         <td class="px-4 py-2 border-b">{{ $registration->name }}</td>
                                         <td class="px-4 py-2 border-b">{{ $registration->email }}</td>
@@ -68,26 +73,73 @@
     </div>
 
     <script>
-        document.getElementById('search').addEventListener('input', function() {
-            let searchQuery = this.value.toLowerCase();
-            let rows = document.querySelectorAll('#table-body tr');
-            rows.forEach(function(row) {
-                let name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                let email = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
-                let nim = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
-
-                if (name.includes(searchQuery) || email.includes(searchQuery) || nim.includes(searchQuery)) {
-                    row.style.display = '';
+        function toggleSelectAll(selectAllCheckbox) {
+            const checkboxes = document.querySelectorAll('.select-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+                if (selectAllCheckbox.checked) {
+                    addToSelectedIds(checkbox.value);
                 } else {
-                    row.style.display = 'none';
+                    removeFromSelectedIds(checkbox.value);
                 }
             });
+        }
+        function addToSelectedIds(id) {
+            let selectedIds = JSON.parse(localStorage.getItem('selected_ids')) || [];
+            if (!selectedIds.includes(id)) {
+                selectedIds.push(id);
+                localStorage.setItem('selected_ids', JSON.stringify(selectedIds));
+            }
+        }
+        function removeFromSelectedIds(id) {
+            let selectedIds = JSON.parse(localStorage.getItem('selected_ids')) || [];
+            selectedIds = selectedIds.filter(selectedId => selectedId !== id);
+            localStorage.setItem('selected_ids', JSON.stringify(selectedIds));
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            const selectedIds = JSON.parse(localStorage.getItem('selected_ids')) || [];
+            const checkboxes = document.querySelectorAll('.select-checkbox');
+            checkboxes.forEach(checkbox => {
+                if (selectedIds.includes(checkbox.value)) {
+                    checkbox.checked = true;
+                }
+                checkbox.addEventListener('change', function() {
+                    if (checkbox.checked) {
+                        addToSelectedIds(checkbox.value);
+                    } else {
+                        removeFromSelectedIds(checkbox.value);
+                    }
+                });
+            });
+            const allChecked = checkboxes.length === selectedIds.length;
+            document.getElementById('select-all').checked = allChecked;
         });
 
-        function filterByStatus(status) {
-            let url = new URL(window.location.href);
-            url.searchParams.set('status', status);
-            window.location.href = url.href;
+        function approveSelected() {
+            const selectedIds = JSON.parse(localStorage.getItem('selected_ids')) || [];
+            if (selectedIds.length > 0) {
+                if (confirm('Are you sure you want to approve the selected registrations?')) {
+                    fetch("{{ route('admin.bulkApprove') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({ ids: selectedIds })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Selected registrations have been approved!');
+                            location.reload();
+                        } else {
+                            alert('Error occurred while approving selected registrations.');
+                        }
+                    });
+                }
+            } else {
+                alert('No registrations selected.');
+            }
         }
     </script>
 </x-app-layout>
