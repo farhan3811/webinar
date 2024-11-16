@@ -22,6 +22,8 @@ Route::post('registration', [RegistrationController::class, 'store'])->name('reg
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/admin/scan-qr', [AdminController::class, 'scanQr'])->name('admin.scanQr');
+
 
 Route::get('/dashboard', [RegistrationController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
@@ -35,7 +37,6 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('index');
         Route::put('/approve/{id}', [AdminController::class, 'approve'])->name('approve');
-        Route::get('/scan-qr', [AdminController::class, 'scanQr'])->name('scanQr');
         Route::post('/check-in/{nim}', [AdminController::class, 'checkIn'])->name('checkIn');
         Route::get('/details/{id}', [AdminController::class, 'showDetails'])->name('details');
         Route::put('/update-status/{id}', [AdminController::class, 'updateStatus'])->name('updateStatus');

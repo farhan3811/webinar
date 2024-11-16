@@ -13,8 +13,15 @@
     <p>Nomor Handphone : {{ $registration->phone }}</p>
     <p>Program Studi : {{ $registration->program_studi }}</p>
     <p>Harap tunjukkan QR code berikut saat kedatangan:</p>
+    <p>Jenis Kehadiran: {{ $registration->graduation_type }}</p>
     <img src="{{ $message->embed($barcodePath) }}" alt="QR Code">
-    
+    @if($registration->graduation_type == 'online')
+        <p>Karena Anda memilih untuk hadir secara online, harap klik link berikut untuk melakukan scan QR code saat acara:</p>
+        <p><a href="{{ route('admin.scanQr') }}">Scan QR Code untuk Kehadiran Online</a></p>
+    @else
+        <p></p>
+    @endif
+
     <p>Terima kasih atas partisipasi Anda. Sampai jumpa di acara wisuda!</p>
 </body>
 </html>
