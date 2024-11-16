@@ -100,7 +100,7 @@
                                         body: JSON.stringify({ nim: qrData.nim })
                                     }).then(response => {
                                         if (response.ok) {
-                                            const audio = new Audio('/sounds/check-in.mp3');
+                                            const audio = new Audio('/sounds/scan.mp3');
                                             audio.play();
                                             alert('Checked in successfully!');
                                             modal.style.display = 'none';
