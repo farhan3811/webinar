@@ -12,7 +12,7 @@
                     <h3 class="text-xl font-semibold">{{ $registration->name }}</h3>
                     <p><strong>Nomor Handphone:</strong> {{ $registration->phone }}</p>
                     <p><strong>Email:</strong> {{ $registration->email }}</p>
-                    <p><strong>Program Studi:</strong> {{ $registration->program_studi}}</p>
+                    <p><strong>Program Studi:</strong> {{ $registration->program_studi }}</p>
                     <p><strong>NIM:</strong> {{ $registration->nim }}</p>
                     <p><strong>Alamat:</strong> {{ $registration->address }}</p>
                     <p><strong>Kota/Kabupaten:</strong> {{ $registration->city }}</p>
@@ -23,7 +23,7 @@
                     <p><strong>Tambahan:</strong> {{ $registration->number_of_guests }}</p>
                     <p><strong>Bukti Pembayaran:</strong> 
                         @if($registration->file_path)
-                            <img src="{{ asset('storage/' . $registration->file_path) }}" alt="Foto" class="w-12 h-12 rounded-full" />
+                            <img id="payment-proof" src="{{ asset('storage/' . $registration->graduation_payment_file) }}" alt="Bukti Pembayaran" class="w-full h-auto cursor-zoom-in" />
                         @else
                             <span>No photo</span>
                         @endif
@@ -32,4 +32,9 @@
             </div>
         </div>
     </div>
+
+    <script>
+        var zooming = new Zooming();
+        zooming.listen('#payment-proof');
+    </script>
 </x-app-layout>
