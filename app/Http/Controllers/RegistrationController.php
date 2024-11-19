@@ -34,16 +34,11 @@ class RegistrationController extends Controller
             'delivery' => 'required|string|in:Dikirim,Ambil Dikampus Universitas Siber Asia',
             'graduation_payment_file' => 'required|file|mimes:jpg,png,jpeg|max:10240',
             'family_payment_file' => 'nullable|file|mimes:jpg,png,jpeg|max:10240',
+            'address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'province' => 'nullable|string|max:255',
+            'postal_code' => 'nullable|string|max:10',
         ]);
-
-        if ($request->delivery === 'Dikirim') {
-            $request->validate([
-                'address' => 'required|string|max:255',
-                'city' => 'required|string|max:255',
-                'province' => 'required|string|max:255',
-                'postal_code' => 'required|string|max:10',
-            ]);
-        }
 
         $registration = new Registration($validated);
 
