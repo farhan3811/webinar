@@ -63,13 +63,17 @@ class RegistrationController extends Controller
     public function dashboard()
     {
         $totalPendaftar = Registration::count();
-        $totalApproved = Registration::where('status', 'approved')->count(); // Approved
-        $totalCheckIn = Registration::where('checked_in', true)->count(); // Check-in
-
+        $totalApproved = Registration::where('status', 'approved')->count();
+        $totalCheckIn = Registration::where('checked_in', true)->count();
+        $totalOnline = Registration::where('graduation_type', 'online')->count(); 
+        $totalOnsite = Registration::where('graduation_type', 'onsite')->count(); 
         return view('dashboard', [
             'totalPendaftar' => $totalPendaftar,
             'totalApproved' => $totalApproved,
             'totalCheckIn' => $totalCheckIn,
+            'totalOnline' => $totalOnline,
+            'totalOnsite' => $totalOnsite,
         ]);
     }
+    
 }
