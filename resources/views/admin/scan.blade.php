@@ -40,7 +40,7 @@
     <div id="modal">
         <div id="modal-content">
             <h2>Data Pendaftaran</h2>
-            <p><strong>Kode Unik:</strong> <span id="kode-unik"></span></p>
+            <p><strong>Kode Unik:</strong> <span id="kode_unik"></span></p>
             <p><strong>Peserta:</strong> <span id="name"></span></p>
             <p><strong>NIM:</strong> <span id="nim"></span></p>
             <p><strong>Program Studi:</strong> <span id="program_studi"></span></p>
@@ -58,7 +58,7 @@
         const nimElement = document.getElementById('nim');
         const emailElement = document.getElementById('email');
         const programStudiElement = document.getElementById('program_studi');
-        const kodeUnikElement = document.getElementById('kode-unik');
+        const kodeUnikElement = document.getElementById('kode_unik');
         const checkInBtn = document.getElementById('check-in-btn');
         const cancelBtn = document.getElementById('cancel-btn');
 
