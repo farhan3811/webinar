@@ -64,6 +64,17 @@ class AdminController extends Controller
     {
         return view('admin.scan');
     }
+    public function update(Request $request, $id)
+{
+    $registration = Registration::findOrFail($id);
+
+    $registration->update($request->only([
+        'name', 'email', 'nim', 'program_studi'
+    ]));
+
+    return response()->json(['success' => true]);
+}
+
     public function checkIn(Request $request, $nim)
     {
         $registration = Registration::where('nim', $nim)->first();

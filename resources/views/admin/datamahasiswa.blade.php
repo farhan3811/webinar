@@ -14,12 +14,11 @@
                         <button onclick="approveSelected()"
                             class="px-4 py-2 bg-green-500 text-white rounded ml-4">Approve All</button>
                     </div>
-
                     <div class="overflow-x-auto">
                         <table class="min-w-full border-collapse table-auto">
                             <thead>
                                 <tr class="bg-sky-800 text-white font-medium">
-                                    <th class="px-4 py-2 border-b">
+                                <th class="px-4 py-2 border-b">
                                         <input type="checkbox" id="select-all" onclick="toggleSelectAll(this)" />
                                     </th>
                                     <th class="px-4 py-2 border-b">Kode Unik</th>
@@ -35,10 +34,10 @@
                             <tbody id="table-body">
                                 @foreach($registrations as $index => $registration)
                                     <tr class="{{ $index % 2 == 0 ? 'bg-white' : 'bg-sky-100' }}">
-                                        <td class="px-4 py-2 border-b">
-                                            <input type="checkbox" class="select-checkbox"
-                                                value="{{ $registration->id }}" />
-                                        </td>
+                                    <td class="px-4 py-2 border-b">
+                                        <input type="checkbox" class="select-checkbox"
+                                            value="{{ $registration->id }}" />
+                                    </td>
                                         <td class="px-4 py-2 border-b">{{ $registration->kode_unik }}</td>
                                         <td class="px-4 py-2 border-b">{{ $registration->name }}</td>
                                         <td class="px-4 py-2 border-b">{{ $registration->email }}</td>
@@ -48,11 +47,11 @@
                                         <td class="px-4 py-2 border-b">
                                             <span
                                                 class="inline-block px-2 py-1 text-sm font-semibold rounded-full 
-                                                        {{ $registration->status == 'approved' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800' }}">
+                                                            {{ $registration->status == 'approved' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800' }}">
                                                 {{ ucfirst($registration->status) }}
                                             </span>
                                         </td>
-                                        <td class="flex px-4 py-2 border-b">
+                                        <td class="flex justify-center items-center px-4 py-2 border-b">
                                             <form action="{{ route('admin.approve', $registration->id) }}" method="POST"
                                                 class="inline">
                                                 @csrf
@@ -75,7 +74,7 @@
                                                         fill="white" />
                                                 </svg>
                                             </a>
-                                            <a href="{{ route('admin.details', $registration->id) }}"
+                                            <a onclick="openEditModal({{ json_encode($registration) }})"
                                                 class="ml-2 px-4 py-2 bg-cyan-500 text-white rounded"><svg width="19"
                                                     height="17" viewBox="0 0 19 17" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
@@ -99,7 +98,78 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div id="editModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-1/2">
+            <h2 class="text-xl font-semibold mb-4">Edit Data Mahasiswa</h2>
+            <form id="editForm">
+                @csrf
+                @method('PUT')
+                <input type="hidden" id="edit-id">
+                <div class="mb-4">
+                    <label for="edit-name" class="block font-medium">Nama</label>
+                    <input type="text" id="edit-name" name="name" class="form-input w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="edit-email" class="block font-medium">Email</label>
+                    <input type="email" id="edit-email" name="email" class="form-input w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="edit-nim" class="block font-medium">NIM</label>
+                    <input type="text" id="edit-nim" name="nim" class="form-input w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="edit-program_studi" class="block font-medium">Program Studi</label>
+                    <input type="text" id="edit-program_studi" name="program_studi" class="form-input w-full">
+                </div>
+                <div class="flex justify-end">
+                    <button type="button" onclick="closeModal()"
+                        class="px-4 py-2 bg-gray-500 text-white rounded mr-2">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
+        function openEditModal(data) {
+            // Populate modal with data
+            document.getElementById('edit-id').value = data.id;
+            document.getElementById('edit-name').value = data.name;
+            document.getElementById('edit-email').value = data.email;
+            document.getElementById('edit-nim').value = data.nim;
+            document.getElementById('edit-program_studi').value = data.program_studi;
+
+            // Show modal
+            document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
+
+        document.getElementById('editForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const id = document.getElementById('edit-id').value;
+            const formData = new FormData(this);
+
+            fetch(`/admin/registrations/${id}`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            }).then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Data berhasil diperbarui.');
+                        location.reload();
+                    } else {
+                        alert('Terjadi kesalahan saat memperbarui data.');
+                    }
+                });
+        });
         function toggleSelectAll(selectAllCheckbox) {
             const checkboxes = document.querySelectorAll('.select-checkbox');
             checkboxes.forEach(checkbox => {

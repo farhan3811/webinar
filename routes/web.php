@@ -22,6 +22,7 @@ Route::post('registration', [RegistrationController::class, 'store'])->name('reg
 Route::get('/', function () {
     return view('welcome');
 });
+Route::put('/admin/registrations/{id}', [AdminController::class, 'update'])->name('admin.update');
 Route::get('/admin/scan-qr', [AdminController::class, 'scanQr'])->name('admin.scanQr');
 
 

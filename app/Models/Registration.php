@@ -31,6 +31,7 @@ class Registration extends Model
         'delivery',
         'check_in_date',
         'pendamping',
+        'seat_number',
     ];
     protected $casts = [
         'check_in_date' => 'datetime',
