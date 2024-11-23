@@ -92,7 +92,6 @@
             <select name="delivery" id="delivery" required
                 class="w-full mt-2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
                 <option value="">-- Pilih Pengiriman --</option>
-                <option value="Dikirim">Dikirim</option>
                 <option value="Ambil Dikampus Universitas Siber Asia">Ambil di Kampus Universitas Siber Asia</option>
             </select>
         </div>
