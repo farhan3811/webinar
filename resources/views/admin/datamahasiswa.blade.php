@@ -168,7 +168,7 @@
                 <div class="flex justify-end">
                     <button type="button" onclick="closeModal()"
                         class="px-4 py-2 bg-gray-500 text-white rounded mr-2">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded">Simpan</button>
+                    <button type="submit" class="px-4 py-2 bg-sky-800 text-white rounded">Simpan</button>
                 </div>
             </form>
         </div>
