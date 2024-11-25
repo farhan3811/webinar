@@ -75,7 +75,7 @@
                                                 </svg>
                                             </a>
                                             <a onclick="openEditModal({{ json_encode($registration) }})"
-                                                class="ml-2 px-4 py-2 bg-cyan-500 text-white rounded"><svg width="19"
+                                                class="ml-2 px-4 py-2 bg-cyan-500 text-white rounded pointer"><svg width="19"
                                                     height="17" viewBox="0 0 19 17" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
                                                     <path
@@ -98,17 +98,24 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div id="editModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-1/2">
+    <div id="editModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center overflow-y-auto">
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-1/2 overflow-y-auto">
             <h2 class="text-xl font-semibold mb-4">Edit Data Mahasiswa</h2>
             <form id="editForm">
                 @csrf
                 @method('PUT')
                 <input type="hidden" id="edit-id">
                 <div class="mb-4">
+                    <label for="edit-kode_unik" class="block font-medium">Kode Unik</label>
+                    <input type="text" id="edit-kode_unik" name="kode_unik" class="form-input w-full">
+                </div>
+                <div class="mb-4">
                     <label for="edit-name" class="block font-medium">Nama</label>
                     <input type="text" id="edit-name" name="name" class="form-input w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="edit-phone" class="block font-medium">No Handphone Aktif</label>
+                    <input type="text" id="edit-phone" name="phone" class="form-input w-full">
                 </div>
                 <div class="mb-4">
                     <label for="edit-email" class="block font-medium">Email</label>
@@ -122,6 +129,42 @@
                     <label for="edit-program_studi" class="block font-medium">Program Studi</label>
                     <input type="text" id="edit-program_studi" name="program_studi" class="form-input w-full">
                 </div>
+                <div class="mb-4">
+                    <label for="edit-graduation_type" class="block font-medium">Status</label>
+                    <input type="text" id="edit-graduation_type" name="graduation_type" class="form-input w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="edit-toga_size" class="block font-medium">Ukuran Toga</label>
+                    <input type="text" id="edit-toga_size" name="toga_size" class="form-input w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="edit-delivery" class="block font-medium">Pengiriman</label>
+                    <input type="text" id="edit-delivery" name="delivery" class="form-input w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="edit-address" class="block font-medium">Alamat</label>
+                    <input type="text" id="edit-address" name="address" class="form-input w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="edit-province" class="block font-medium">Provinsi</label>
+                    <input type="text" id="edit-province" name="province" class="form-input w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="edit-city" class="block font-medium">Kota</label>
+                    <input type="text" id="edit-city" name="city" class="form-input w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="edit-postal_code" class="block font-medium">ZIP</label>
+                    <input type="text" id="edit-postal_code" name="postal_code" class="form-input w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="edit-pendamping" class="block font-medium">Jumlah Pendamping Tambahan</label>
+                    <input type="text" id="edit-pendamping" name="pendamping" class="form-input w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="edit-seat_number" class="block font-medium">Nomor Kursi</label>
+                    <input type="text" id="edit-seat_number" name="seat_number" class="form-input w-full">
+                </div>
                 <div class="flex justify-end">
                     <button type="button" onclick="closeModal()"
                         class="px-4 py-2 bg-gray-500 text-white rounded mr-2">Batal</button>
@@ -133,14 +176,22 @@
 
     <script>
         function openEditModal(data) {
-            // Populate modal with data
             document.getElementById('edit-id').value = data.id;
+            document.getElementById('edit-kode_unik').value = data.kode_unik;
             document.getElementById('edit-name').value = data.name;
+            document.getElementById('edit-phone').value = data.phone;
             document.getElementById('edit-email').value = data.email;
             document.getElementById('edit-nim').value = data.nim;
             document.getElementById('edit-program_studi').value = data.program_studi;
-
-            // Show modal
+            document.getElementById('edit-address').value = data.address;
+            document.getElementById('edit-province').value = data.province;
+            document.getElementById('edit-postal_code').value = data.postal_code;
+            document.getElementById('edit-graduation_type').value = data.graduation_type;
+            document.getElementById('edit-toga_size').value = data.toga_size;
+            document.getElementById('edit-pendamping').value = data.pendamping;
+            document.getElementById('edit-seat_number').value = data.seat_number;
+            document.getElementById('edit-delivery').value = data.delivery;
+            document.getElementById('edit-city').value = data.city;
             document.getElementById('editModal').classList.remove('hidden');
         }
 

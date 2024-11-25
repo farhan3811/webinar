@@ -69,7 +69,7 @@ class AdminController extends Controller
     $registration = Registration::findOrFail($id);
 
     $registration->update($request->only([
-        'name', 'email', 'nim', 'program_studi'
+        'name', 'email', 'nim', 'program_studi', 'kode_unik', 'phone', 'address', 'province', 'postal_code','graduation_type','toga-size','pendamping','seat_number','delivery','city'
     ]));
 
     return response()->json(['success' => true]);
