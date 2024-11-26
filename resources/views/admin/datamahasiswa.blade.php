@@ -97,82 +97,132 @@
             </div>
         </div>
     </div>
+    <div id="editModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-2xl mx-auto sm:w-3/4 lg:w-1/2 max-h-[90vh] overflow-y-auto">
+    <h2 class="text-2xl font-semibold mb-6 text-gray-800 dark:text-white text-center">
+      Edit Data Mahasiswa
+    </h2>
+    <form id="editForm" class="space-y-4">
+      @csrf
+      @method('PUT')
+      <input type="hidden" id="edit-id">
+      
+      <!-- Kode Unik -->
+      <div>
+        <label for="edit-kode_unik" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kode Unik</label>
+        <input type="text" id="edit-kode_unik" name="kode_unik" class="form-input w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
+      </div>
 
-    <div id="editModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center overflow-y-auto">
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-1/2 overflow-y-auto">
-            <h2 class="text-xl font-semibold mb-4">Edit Data Mahasiswa</h2>
-            <form id="editForm">
-                @csrf
-                @method('PUT')
-                <input type="hidden" id="edit-id">
-                <div class="mb-4">
-                    <label for="edit-kode_unik" class="block font-medium">Kode Unik</label>
-                    <input type="text" id="edit-kode_unik" name="kode_unik" class="form-input w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="edit-name" class="block font-medium">Nama</label>
-                    <input type="text" id="edit-name" name="name" class="form-input w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="edit-phone" class="block font-medium">No Handphone Aktif</label>
-                    <input type="text" id="edit-phone" name="phone" class="form-input w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="edit-email" class="block font-medium">Email</label>
-                    <input type="email" id="edit-email" name="email" class="form-input w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="edit-nim" class="block font-medium">NIM</label>
-                    <input type="text" id="edit-nim" name="nim" class="form-input w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="edit-program_studi" class="block font-medium">Program Studi</label>
-                    <input type="text" id="edit-program_studi" name="program_studi" class="form-input w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="edit-graduation_type" class="block font-medium">Status</label>
-                    <input type="text" id="edit-graduation_type" name="graduation_type" class="form-input w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="edit-toga_size" class="block font-medium">Ukuran Toga</label>
-                    <input type="text" id="edit-toga_size" name="toga_size" class="form-input w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="edit-delivery" class="block font-medium">Pengiriman</label>
-                    <input type="text" id="edit-delivery" name="delivery" class="form-input w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="edit-address" class="block font-medium">Alamat</label>
-                    <input type="text" id="edit-address" name="address" class="form-input w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="edit-province" class="block font-medium">Provinsi</label>
-                    <input type="text" id="edit-province" name="province" class="form-input w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="edit-city" class="block font-medium">Kota</label>
-                    <input type="text" id="edit-city" name="city" class="form-input w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="edit-postal_code" class="block font-medium">ZIP</label>
-                    <input type="text" id="edit-postal_code" name="postal_code" class="form-input w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="edit-pendamping" class="block font-medium">Jumlah Pendamping Tambahan</label>
-                    <input type="text" id="edit-pendamping" name="pendamping" class="form-input w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="edit-seat_number" class="block font-medium">Nomor Kursi</label>
-                    <input type="text" id="edit-seat_number" name="seat_number" class="form-input w-full">
-                </div>
-                <div class="flex justify-end">
-                    <button type="button" onclick="closeModal()"
-                        class="px-4 py-2 bg-gray-500 text-white rounded mr-2">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-sky-800 text-white rounded">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
+      <!-- Nama -->
+      <div>
+        <label for="edit-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama</label>
+        <input type="text" id="edit-name" name="name" class="form-input w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
+      </div>
+
+      <!-- No Handphone -->
+      <div>
+        <label for="edit-phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No Handphone Aktif</label>
+        <input type="text" id="edit-phone" name="phone" class="form-input w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label for="edit-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+        <input type="email" id="edit-email" name="email" class="form-input w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
+      </div>
+
+      <!-- NIM -->
+      <div>
+        <label for="edit-nim" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIM</label>
+        <input type="text" id="edit-nim" name="nim" class="form-input w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
+      </div>
+
+      <!-- Program Studi -->
+      <div>
+        <label for="edit-program_studi" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Program Studi</label>
+        <select id="edit-program_studi" name="program_studi" class="form-select w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
+          <option value="">-- Pilih Program Studi --</option>
+          <option value="Informatika">Informatika</option>
+          <option value="Sistem Informasi">Sistem Informasi</option>
+          <option value="Komunikasi">Komunikasi</option>
+          <option value="Akuntansi">Akuntansi</option>
+          <option value="Manajemen">Manajemen</option>
+        </select>
+      </div>
+
+      <!-- Ukuran Toga -->
+      <div>
+        <label for="edit-toga_size" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ukuran Toga</label>
+        <select id="edit-toga_size" name="toga_size" class="form-select w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
+          <option value="">-- Pilih Ukuran Toga --</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+        </select>
+      </div>
+
+      <!-- Status -->
+      <div>
+        <label for="edit-graduation_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+        <select id="edit-graduation_type" name="graduation_type" class="form-select w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
+          <option value="">Pilih Status</option>
+          <option value="online">Online</option>
+          <option value="onsite">Onsite</option>
+        </select>
+      </div>
+
+      <!-- Pengiriman -->
+      <div>
+        <label for="edit-delivery" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Pengiriman</label>
+        <select id="edit-delivery" name="delivery" class="form-select w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
+          <option value="">Pilih Pengiriman</option>
+          <option value="Dikirim">Dikirim</option>
+          <option value="Ambil di Kampus Universitas Siber Asia">Ambil di Kampus Universitas Siber Asia</option>
+        </select>
+      </div>
+
+      <!-- Alamat -->
+      <div>
+        <label for="edit-address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Alamat</label>
+        <textarea id="edit-address" name="address" rows="2" class="form-textarea w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200"></textarea>
+      </div>
+      <div>
+        <label for="edit-province" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Provinsi</label>
+        <textarea id="edit-province" name="province" rows="2" class="form-textarea w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200"></textarea>
+      </div>
+
+      <div>
+        <label for="edit-city" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kota</label>
+        <textarea id="edit-city" name="city" rows="2" class="form-textarea w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200"></textarea>
+      </div>
+
+      <div>
+        <label for="edit-postal_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kode Pos</label>
+        <textarea id="edit-postal_code" name="postal_code" rows="2" class="form-textarea w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200"></textarea>
+      </div>
+
+      <div>
+        <label for="edit-pendamping" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jumlah Pendamping</label>
+        <textarea id="edit-pendamping" name="pendamping" rows="2" class="form-textarea w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200"></textarea>
+      </div>
+      <div>
+        <label for="edit-seat_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nomor Kursi</label>
+        <textarea id="edit-seat_number" name="seat_number" rows="2" class="form-textarea w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200"></textarea>
+      </div>
+      <!-- Tombol Aksi -->
+      <div class="flex justify-end space-x-4">
+        <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+          Batal
+        </button>
+        <button type="submit" class="px-4 py-2 bg-sky-800 text-white rounded-md hover:bg-sky-900">
+          Simpan
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
 
     <script>
         function openEditModal(data) {
