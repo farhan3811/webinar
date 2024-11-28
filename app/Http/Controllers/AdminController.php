@@ -115,6 +115,7 @@ class AdminController extends Controller
         $registrations = Registration::when($search, function ($query, $search) {
             return $query->where('name', 'like', '%' . $search . '%')
                 ->orWhere('email', 'like', '%' . $search . '%')
+                ->orWhere('kode_unik', 'like', '%' . $search . '%')
                 ->orWhere('nim', 'like', '%' . $search . '%');
         })
             ->paginate(10);
