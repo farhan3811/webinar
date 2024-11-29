@@ -12,7 +12,7 @@ deploy:
     # Memastikan public key ada di authorized_keys di server
  #   - ssh -i ~/.ssh/id_rsa techteam@$VPS_IP "mkdir -p ~/.ssh && echo '$SSH_PUBLIC_KEY' >> ~/.ssh/authorized_keys && echo 'SSH connection successful'"
   script:
-    - ssh techteam@$VPS_IP "cd /home/techteam/pendaftaranwisuda && git pull https://oauth2:glpat-rkxirQWBsT_4i7ze6-z1@gitlab.unsia.ac.id/farhan/pendaftaranwisuda.git && docker-compose down && docker-compose up --build "
+    - ssh techteam@$VPS_IP "cd /home/techteam/pendaftaranwisuda && git pull https://oauth2:glpat-rkxirQWBsT_4i7ze6-z1@gitlab.unsia.ac.id/farhan/pendaftaranwisuda.git && docker-compose down && docker-compose up -d --build "
     #- pwd
    # - ls -al /home/
    # - cd /home/techteam/react/react-devops 
