@@ -25,7 +25,7 @@ COPY . .
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # Expose port 9000 (PHP-FPM default)
-EXPOSE 9000
+EXPOSE 9090
 
 # Start the PHP-FPM server
 CMD ["php-fpm"]
