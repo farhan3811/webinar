@@ -130,10 +130,45 @@ class AdminController extends Controller
     public function bulkApprove(Request $request)
     {
         $ids = $request->input('ids');
-        Registration::whereIn('id', $ids)->update(['status' => 'approved']);
+        $registrations = Registration::whereIn('id', $ids)->get();
+    
+        foreach ($registrations as $registration) {
+            $registration->status = 'approved';
+            $registration->save();
+    
+            // Generate QR Code
+            $qrData = [
+                'nim' => $registration->nim,
+                'name' => $registration->name,
+                'email' => $registration->email,
+            ];
+            $qrString = json_encode($qrData);
+            $tempFilePath = storage_path('app/public/qr_codes/' . $registration->nim . '.png');
+            QrCode::format('png')->size(400)->generate($qrString, $tempFilePath);
+    
+            // Send Email
+            try {
+                Mail::to($registration->email)->send(new RegistrationApproved($registration, $tempFilePath));
+                EmailLog::create([
+                    'recipient' => $registration->email,
+                    'status' => 'Sukses',
+                    'subject' => 'Persetujuan Pendaftaran Wisuda',
+                    'error_message' => null,
+                ]);
+            } catch (\Exception $e) {
+                EmailLog::create([
+                    'recipient' => $registration->email,
+                    'status' => 'Gagal',
+                    'subject' => 'Persetujuan Pendaftaran Wisuda',
+                    'error_message' => $e->getMessage(),
+                ]);
+                Log::error('Gagal mengirim email ke ' . $registration->email . ': ' . $e->getMessage());
+            }
+        }
     
         return response()->json(['success' => true]);
     }
+    
     
     
     public function updateStatus(Request $request, $id)
