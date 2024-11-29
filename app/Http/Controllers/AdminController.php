@@ -82,7 +82,7 @@ class AdminController extends Controller
         if ($registration) {
             if ($registration->status === 'approved' && !$registration->checked_in) {
                 $registration->checked_in = true;
-                $registration->check_in_date = now();
+                $registration->check_in_date = now()->setTimezone('Asia/Jakarta');
                 $registration->save();
 
                 return response()->json(['success' => true, 'message' => 'Check-in berhasil!']);
