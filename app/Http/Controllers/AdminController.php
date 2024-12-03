@@ -11,6 +11,7 @@ use App\Mail\RegistrationApproved;
 use App\Models\Registration;
 use App\Models\EmailLog;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 
 class AdminController extends Controller
@@ -24,6 +25,7 @@ class AdminController extends Controller
     {
         return Excel::download(new RegistrationsExport, 'registrations.xlsx');
     }
+
     public function approve($id)
     {
         $registration = Registration::findOrFail($id);
@@ -37,11 +39,22 @@ class AdminController extends Controller
         ];
 
         $qrString = json_encode($qrData);
-        $tempFilePath = storage_path('app/public/qr_codes/' . $registration->nim . '.png');
-        QrCode::format('png')->size(400)->generate($qrString, $tempFilePath);
+        $tempPngFilePath = storage_path('app/public/qr_codes/' . $registration->nim . '.png'); // Simpan sebagai PNG
+
+        QrCode::format('png')
+            ->size(400)
+            ->color(0, 0, 0)
+            ->backgroundColor(255, 255, 255)
+            ->margin(10)
+            ->generate($qrString, $tempPngFilePath);
+
+        $tempJpgFilePath = storage_path('app/public/qr_codes/' . $registration->nim . '.jpg');
+        $image = imagecreatefrompng($tempPngFilePath);
+        imagejpeg($image, $tempJpgFilePath);
+        imagedestroy($image);
 
         try {
-            Mail::to($registration->email)->send(new RegistrationApproved($registration, $tempFilePath));
+            Mail::to($registration->email)->send(new RegistrationApproved($registration, $tempJpgFilePath));
             EmailLog::create([
                 'recipient' => $registration->email,
                 'status' => 'Sukses',
@@ -58,22 +71,71 @@ class AdminController extends Controller
             Log::error('Gagal mengirim email ke ' . $registration->email . ': ' . $e->getMessage());
         }
 
+        try {
+
+            $message = "
+                Selamat atas kelulusan Anda!\n
+                Yth. {$registration->name},\n
+                Dengan bangga, kami mengundang Anda untuk menghadiri acara wisuda sebagai bentuk apresiasi atas pencapaian akademik Anda.\n\n
+                **Detail Pendaftaran:**\n
+                - Nomor Induk Mahasiswa: {$registration->nim}\n
+                - Nomor Handphone: {$registration->phone}\n
+                - Program Studi: {$registration->program_studi}\n
+                - Jenis Kehadiran: {$registration->graduation_type}\n\n
+                Harap tunjukkan QR code berikut saat kedatangan.\n\n
+                Terima kasih atas partisipasi Anda. Sampai jumpa di acara wisuda!
+            ";
+
+            $response = Http::withHeaders([
+                'Authorization' => '1E3I7ZeAfw01KXQT2TgG4Lgo3GOVlkkdcjKDS38VqgVdLeB6uJYIayaDLvIkjciK',
+            ])->attach('image', file_get_contents($tempJpgFilePath), 'QR_Code.jpg')
+                ->post('https://jkt.wablas.com/api/send-image', [
+                    'phone' => $registration->phone,
+                    'caption' => $message,
+                ]);
+
+            if ($response->successful()) {
+                Log::info('Pesan WhatsApp berhasil dikirim ke ' . $registration->phone);
+            } else {
+                Log::error('Gagal mengirim WhatsApp: ' . $response->body());
+            }
+        } catch (\Exception $e) {
+            Log::error('Error saat mengirim WhatsApp: ' . $e->getMessage());
+        }
+
         return redirect()->route('datamahasiswa')->with('success', 'Pendaftaran berhasil diapprove.');
     }
+
+
+
     public function scanQr()
     {
         return view('admin.scan');
     }
     public function update(Request $request, $id)
-{
-    $registration = Registration::findOrFail($id);
+    {
+        $registration = Registration::findOrFail($id);
 
-    $registration->update($request->only([
-        'name', 'email', 'nim', 'program_studi', 'kode_unik', 'phone', 'address', 'province', 'postal_code','graduation_type','toga-size','pendamping','seat_number','delivery','city'
-    ]));
+        $registration->update($request->only([
+            'name',
+            'email',
+            'nim',
+            'program_studi',
+            'kode_unik',
+            'phone',
+            'address',
+            'province',
+            'postal_code',
+            'graduation_type',
+            'toga-size',
+            'pendamping',
+            'seat_number',
+            'delivery',
+            'city'
+        ]));
 
-    return response()->json(['success' => true]);
-}
+        return response()->json(['success' => true]);
+    }
 
     public function checkIn(Request $request, $nim)
     {
@@ -93,8 +155,8 @@ class AdminController extends Controller
     }
     public function dataCheckIn(Request $request)
     {
-        $search = $request->get('search'); 
-    
+        $search = $request->get('search');
+
         $checkIns = Registration::query()
             ->where('checked_in', true)
             ->when($search, function ($query, $search) {
@@ -104,10 +166,10 @@ class AdminController extends Controller
             })
             ->orderBy('check_in_date', 'desc')
             ->paginate(10);
-    
+
         return view('admin.data-checkin', compact('checkIns'));
     }
-    
+
     public function dataMahasiswa(Request $request)
     {
         $search = $request->get('search');
@@ -127,15 +189,16 @@ class AdminController extends Controller
         $logs = EmailLog::orderBy('created_at', 'desc')->paginate(10);
         return view('admin.email-logs', compact('logs'));
     }
+
     public function bulkApprove(Request $request)
     {
         $ids = $request->input('ids');
         $registrations = Registration::whereIn('id', $ids)->get();
-    
+
         foreach ($registrations as $registration) {
             $registration->status = 'approved';
             $registration->save();
-    
+
             // Generate QR Code
             $qrData = [
                 'nim' => $registration->nim,
@@ -143,12 +206,25 @@ class AdminController extends Controller
                 'email' => $registration->email,
             ];
             $qrString = json_encode($qrData);
-            $tempFilePath = storage_path('app/public/qr_codes/' . $registration->nim . '.png');
-            QrCode::format('png')->size(400)->generate($qrString, $tempFilePath);
-    
-            // Send Email
+            $tempPngFilePath = storage_path('app/public/qr_codes/' . $registration->nim . '.png'); // Simpan sebagai PNG
+
+            // Generate QR Code dengan border putih
+            QrCode::format('png')
+                ->size(400)
+                ->color(0, 0, 0) // QR code hitam
+                ->backgroundColor(255, 255, 255) // Latar belakang putih
+                ->margin(10) // Margin putih di sekitar QR code
+                ->generate($qrString, $tempPngFilePath);
+
+            // Convert PNG ke JPG (jika perlu)
+            $tempJpgFilePath = storage_path('app/public/qr_codes/' . $registration->nim . '.jpg'); // File JPG akhir
+            $image = imagecreatefrompng($tempPngFilePath); // Load PNG
+            imagejpeg($image, $tempJpgFilePath); // Convert ke JPG
+            imagedestroy($image); // Hapus gambar untuk menghemat memori
+
+            // Kirim Email dengan JPG QR Code
             try {
-                Mail::to($registration->email)->send(new RegistrationApproved($registration, $tempFilePath));
+                Mail::to($registration->email)->send(new RegistrationApproved($registration, $tempJpgFilePath));
                 EmailLog::create([
                     'recipient' => $registration->email,
                     'status' => 'Sukses',
@@ -164,13 +240,44 @@ class AdminController extends Controller
                 ]);
                 Log::error('Gagal mengirim email ke ' . $registration->email . ': ' . $e->getMessage());
             }
+
+            // Kirim WhatsApp
+            try {
+                $message = "
+                    Selamat atas kelulusan Anda!\n
+                    Yth. {$registration->name},\n
+                    Dengan bangga, kami mengundang Anda untuk menghadiri acara wisuda sebagai bentuk apresiasi atas pencapaian akademik Anda.\n\n
+                    **Detail Pendaftaran:**\n
+                    - Nomor Induk Mahasiswa: {$registration->nim}\n
+                    - Nomor Handphone: {$registration->phone}\n
+                    - Program Studi: {$registration->program_studi}\n
+                    - Jenis Kehadiran: {$registration->graduation_type}\n\n
+                    Harap tunjukkan QR code berikut saat kedatangan.\n\n
+                    Terima kasih atas partisipasi Anda. Sampai jumpa di acara wisuda!
+                ";
+
+                $response = Http::withHeaders([
+                    'Authorization' => '1E3I7ZeAfw01KXQT2TgG4Lgo3GOVlkkdcjKDS38VqgVdLeB6uJYIayaDLvIkjciK',
+                ])->attach('image', file_get_contents($tempJpgFilePath), 'QR_Code.jpg')
+                    ->post('https://jkt.wablas.com/api/send-image', [
+                        'phone' => $registration->phone,
+                        'caption' => $message,
+                    ]);
+
+                if ($response->successful()) {
+                    Log::info('Pesan WhatsApp berhasil dikirim ke ' . $registration->phone);
+                } else {
+                    Log::error('Gagal mengirim WhatsApp: ' . $response->body());
+                }
+            } catch (\Exception $e) {
+                Log::error('Error saat mengirim WhatsApp: ' . $e->getMessage());
+            }
         }
-    
+
         return response()->json(['success' => true]);
     }
-    
-    
-    
+
+
     public function updateStatus(Request $request, $id)
     {
         $registration = Registration::findOrFail($id);
