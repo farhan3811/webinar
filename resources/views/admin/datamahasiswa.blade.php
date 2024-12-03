@@ -64,7 +64,7 @@
                                         <td class="px-4 py-2 border-b text-center">
                                             <span
                                                 class="inline-block px-2 py-1 text-sm font-semibold rounded-full 
-                                        {{ $registration->status == 'approved' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800' }}">
+                                            {{ $registration->status == 'approved' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800' }}">
                                                 {{ ucfirst($registration->status) }}
                                             </span>
                                         </td>
@@ -381,36 +381,36 @@
             document.getElementById('select-all').checked = allChecked;
         });
         function approveSelected() {
-    const selectedIds = JSON.parse(localStorage.getItem('selected_ids')) || [];
-    if (selectedIds.length > 0) {
-        if (confirm('Apakah Anda yakin ingin menyetujui pendaftaran yang dipilih?')) {
-            fetch("{{ route('admin.bulkApprove') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                },
-                body: JSON.stringify({ ids: selectedIds }),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Pendaftaran yang dipilih telah disetujui dan email telah dikirim!');
-                        localStorage.removeItem('selected_ids');
-                        location.reload(); 
-                    } else {
-                        alert('An error occurred while processing approvals.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An unexpected error occurred.');
-                });
+            const selectedIds = JSON.parse(localStorage.getItem('selected_ids')) || [];
+            if (selectedIds.length > 0) {
+                if (confirm('Apakah Anda yakin ingin menyetujui pendaftaran yang dipilih?')) {
+                    fetch("{{ route('admin.bulkApprove') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        },
+                        body: JSON.stringify({ ids: selectedIds }),
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('Pendaftaran yang dipilih telah disetujui dan email telah dikirim!');
+                                localStorage.removeItem('selected_ids');
+                                location.reload();
+                            } else {
+                                alert('An error occurred while processing approvals.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An unexpected error occurred.');
+                        });
+                }
+            } else {
+                alert('Tidak ada data yang dipilih.');
+            }
         }
-    } else {
-        alert('Tidak ada data yang dipilih.');
-    }
-}
 
 
     </script>

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('registration', [RegistrationController::class, 'showForm']);
 Route::post('registration', [RegistrationController::class, 'store'])->name('registration.store');
+Route::post('/admin/check-in/{nim}', [AdminController::class, 'checkIn'])->name('admin.checkIn');
 
 Route::get('/', function () {
     return view('welcome');
@@ -38,7 +39,6 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('index');
         Route::put('/approve/{id}', [AdminController::class, 'approve'])->name('approve');
-        Route::post('/check-in/{nim}', [AdminController::class, 'checkIn'])->name('checkIn');
         Route::get('/details/{id}', [AdminController::class, 'showDetails'])->name('details');
         Route::put('/update-status/{id}', [AdminController::class, 'updateStatus'])->name('updateStatus');
         Route::get('/export-excel', [AdminController::class, 'exportExcel'])->name('exportExcel');
