@@ -1,0 +1,28 @@
+deploy:
+  stage: deploy
+ # image: alpine:latest
+  before_script:
+    - apt-get update && apt-get install -y openssh-client git
+    - mkdir -p ~/.ssh
+    # Menyimpan private key ke dalam file id_rsa
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    # Menambahkan VPS IP ke dalam known_hosts
+    - ssh-keyscan -H $VPS_IP >> ~/.ssh/known_hosts
+    # Memastikan public key ada di authorized_keys di server
+ #   - ssh -i ~/.ssh/id_rsa techteam@$VPS_IP "mkdir -p ~/.ssh && echo '$SSH_PUBLIC_KEY' >> ~/.ssh/authorized_keys && echo 'SSH connection successful'"
+  script:
+    - ssh techteam@$VPS_IP "cd /home/techteam/pendaftaranwisuda && git pull https://oauth2:glpat-rkxirQWBsT_4i7ze6-z1@gitlab.unsia.ac.id/farhan/pendaftaranwisuda.git && docker-compose down && docker-compose up -d --build "
+    #- pwd
+   # - ls -al /home/
+   # - cd /home/techteam/react/react-devops 
+  #  - git config --add safe.directory /home/techteam/react/react-devops 
+   # - git pull https://gitlab-ci-token:$CI_JOB_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME.git 
+   # - echo "http://ftp.halifax.rwth-aachen.de/alpine/v3.13/community" | tee -a /etc/apk/repositories >/dev/null
+   # - apk update
+   # - apk add docker docker-compose
+   # - /etc/init.d/docker start
+   # - docker-compose up --build
+   # - npm run build
+  only:
+    - main
