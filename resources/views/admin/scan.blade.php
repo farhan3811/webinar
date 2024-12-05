@@ -57,8 +57,8 @@
         const kodeUnikElement = document.getElementById('kode_unik');
         const nameElement = document.getElementById('name');
         const nimElement = document.getElementById('nim');
-        const emailElement = document.getElementById('email');
         const programStudiElement = document.getElementById('program_studi');
+        const emailElement = document.getElementById('email');
         const checkInBtn = document.getElementById('check-in-btn');
         const cancelBtn = document.getElementById('cancel-btn');
 
