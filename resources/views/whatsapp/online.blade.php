@@ -1,4 +1,3 @@
-
 Kepada Yth.
 {{ $name }}
 Program Studi {{ $program_studi }}
@@ -15,7 +14,7 @@ Link Zoom: https://bit.ly/WisudaUnsia2
 Meeting ID: 975 0128 8579
 
 Virtual Background Zoom: https://bit.ly/BGZoomWisudaUnsia2 
-Link Scan QR Code Absensi Wisuda: https://bit.ly/3VmvEui 
+*Link Scan QR Code Absensi Wisuda: https://bit.ly/3VmvEui*
 Live Streaming YouTube: https://youtube.com/live/dr01Tjfc14Q?feature=share 
 
 Kami berharap kehadiran Saudara/i dapat memeriahkan acara ini dan menjadikannya momen berharga dalam hidup Saudara/i.
@@ -29,3 +28,7 @@ Universitas Siber Asia
 Kontak Bagian Pendaftaran:
 Fian: (+62) 815-1469-6934
 Holis: (+62) 812-1898-7353
+
+*Tata Tertib Wisudawan/Wati secara Online >> https://bit.ly/3ZDSEr2*
+*Petunjuk Masuk Acara Wisuda Khusus Wisudawan/Wati secara Online >> https://bit.ly/3OJ9T41*
+*FAQ Wisuda UNSIA >> https://bit.ly/49s3HqK*

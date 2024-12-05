@@ -3,13 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Wisuda</title>
+    <title>Undangan Wisuda Universitas Siber Asia</title>
 </head>
 <body>
-    <p><strong>Desain Undangan Wisudawan/Wati – Terlampir</strong></p>
-    <p><strong>Denah Pendaftaran Wisuda</strong></p>
-    <p><strong>Copies Undangan Wisuda Onsite</strong></p>
-
     <p><strong>Kepada Yth.</strong><br>
     {{ $registration->name }}<br>
     Program Studi {{ $registration->program_studi }}<br>
@@ -21,8 +17,10 @@
 
     <p><strong>Hari, Tanggal:</strong> Minggu, 08 Desember 2024<br>
     <strong>Waktu:</strong> 08:00 s.d 12:30 WIB<br>
-    <strong>Tempat:</strong> <strong>UNAS AUDITORIUM</strong><br>
+    <strong>Tempat:</strong> <em>UNAS AUDITORIUM</em><br>
     <strong>Alamat:</strong> Jl. Sawo Manila No.61, Pejaten, Pasar Minggu, Jakarta Selatan</p>
+
+    <p><img src="{{ $message->embed($barcodePath) }}" alt="QR Code"></p>
 
     <p>Kami berharap kehadiran Saudara/i beserta keluarga dapat memeriahkan acara ini dan menjadikannya momen berharga dalam hidup Saudara/i.</p>
 
@@ -36,13 +34,21 @@
     Fian: (+62) 815-1469-6934<br>
     Holis: (+62) 812-1898-7353</p>
 
-    <p><img src="{{ $message->embed($barcodePath) }}" alt="QR Code"></p>
-
-    <p><strong>Nomor duduk Anda adalah {{ $registration->seat_number }}</strong></p>
-    <p><strong>Kode Unik untuk Keluarga Pendamping adalah {{ $registration->kode_unik }}</strong><br>
+    <p><strong>Nomor duduk Anda adalah {{ $registration->seat_number }}</strong><br>
+    <strong>Kode Unik untuk Keluarga Pendamping adalah {{ $registration->kode_unik }}</strong><br>
     Mohon pastikan kode unik ini diinformasikan kepada keluarga pendamping untuk kelancaran proses pendaftaran.</p>
-    <p><strong>Scan Barcode Wisudawan/Wati – Terlampir</strong></p>
-    <p><strong>Tata Tertib Wisudawan/Wati secara Onsite >> <a href="https://bit.ly/3ZDSEr2">Tata Tertib</a></strong></p>
-    <p><strong>Petunjuk Masuk Acara Wisuda Khusus Wisudawan/Wati secara Onsite >> <a href="https://bit.ly/3OJ9T41">Petunjuk Masuk</a></strong></p>
+
+    <p><a href="https://bit.ly/3ZDSEr2">Tata Tertib Wisudawan/Wati secara Onsite</a><br>
+    <a href="https://bit.ly/3OJ9T41">Petunjuk Masuk Acara Wisuda Khusus Wisudawan/Wati secara Onsite</a><br>
+    <a href="https://bit.ly/3CY0L8Z">Denah Wisuda</a><br>
+    <a href="https://bit.ly/3OJ9T41">Petunjuk Masuk Acara Wisuda Khusus Keluarga Pendamping & Tambahan</a><br>
+    <a href="https://bit.ly/49s3HqK">Rekomendasi Akomodasi Penginapan</a></p>
+
+    <p><strong>Imbauan:</strong><br>
+    - Selama acara wisuda berlangsung, Calon Wisudawan/Wati tidak diperkenankan makan hingga acara selesai. Kami menyarankan agar Calon Wisudawan/Wati sarapan terlebih dahulu di pagi hari. Untuk snack dapat dititipkan kepada keluarga yang mendampingi.<br>
+    - Bagi Keluarga Pendamping & Tambahan selama acara wisuda berlangsung, dimohon untuk menjaga ketertiban dan ketenangan hingga acara selesai.<br>
+    - Harap membuang sampah pada tempat yang telah disediakan untuk menjaga kebersihan lokasi acara Wisuda.</p>
+
+    <p><a href="https://bit.ly/41llBcy">FAQ Wisuda UNSIA</a></p>
 </body>
 </html>
