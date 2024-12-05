@@ -82,18 +82,26 @@ class AdminController extends Controller
             ]);
             Log::error('Gagal mengirim email ke ' . $registration->email . ': ' . $e->getMessage());
         }
-        // Kirim WhatsApp
         try {
-            Http::withHeaders([
-                'Authorization' => 'zYrwBIfakpqS2Vm5dL2wbiknSDiXMQqbpiCdljaQHZ0itwGxsB3qCRRQnHcmMebf',
+            $response = Http::withHeaders([
+                'Authorization' => '1E3I7ZeAfw01KXQT2TgG4Lgo3GOVlkkdcjKDS38VqgVdLeB6uJYIayaDLvIkjciK',
             ])->attach('image', file_get_contents($tempJpgFilePath), 'QR_Code.jpg')
                 ->post('https://jkt.wablas.com/api/send-image', [
                     'phone' => $registration->phone,
                     'caption' => $message,
                 ]);
+        
+            // Log the response if needed
+            if ($response->successful()) {
+                Log::info('WhatsApp image sent successfully to ' . $registration->phone);
+            } else {
+                // Log failed request
+                Log::error('Failed to send WhatsApp image. Response: ' . $response->body());
+            }
         } catch (\Exception $e) {
             Log::error('Error WhatsApp: ' . $e->getMessage());
         }
+        
 
         return redirect()->route('datamahasiswa')->with('success', 'Pendaftaran berhasil diapprove.');
     }
@@ -187,11 +195,9 @@ class AdminController extends Controller
         $registrations = Registration::whereIn('id', $ids)->get();
     
         foreach ($registrations as $registration) {
-            // Update status pendaftaran
             $registration->status = 'approved';
             $registration->save();
     
-            // Generate QR Code
             $qrData = [
                 'nim' => $registration->nim,
                 'name' => $registration->name,
@@ -200,25 +206,21 @@ class AdminController extends Controller
             $qrString = json_encode($qrData);
             $tempPngFilePath = storage_path('app/public/qr_codes/' . $registration->nim . '.png'); // Simpan sebagai PNG
     
-            // Generate QR Code dengan border putih
             QrCode::format('png')
                 ->size(400)
-                ->color(0, 0, 0) // QR code hitam
-                ->backgroundColor(255, 255, 255) // Latar belakang putih
-                ->margin(10) // Margin putih di sekitar QR code
+                ->color(0, 0, 0) 
+                ->backgroundColor(255, 255, 255) 
+                ->margin(10) 
                 ->generate($qrString, $tempPngFilePath);
     
-            // Convert PNG ke JPG (jika perlu)
             $tempJpgFilePath = storage_path('app/public/qr_codes/' . $registration->nim . '.jpg'); // File JPG akhir
-            $image = imagecreatefrompng($tempPngFilePath); // Load PNG
-            imagejpeg($image, $tempJpgFilePath); // Convert ke JPG
-            imagedestroy($image); // Hapus gambar untuk menghemat memori
+            $image = imagecreatefrompng($tempPngFilePath); 
+            imagejpeg($image, $tempJpgFilePath);
+            imagedestroy($image); 
     
-            // Menentukan template email dan WhatsApp berdasarkan jenis wisuda
             $templateWhatsApp = $registration->graduation_type === 'online' ? 'whatsapp.online' : 'whatsapp.onsite';
             $templateEmail = $registration->graduation_type === 'online' ? 'emails.online' : 'emails.onsite';
     
-            // Kirim Email
             try {
                 Mail::to($registration->email)->send(new RegistrationApproved($registration, $tempJpgFilePath, $templateEmail));
                 EmailLog::create([
@@ -248,12 +250,11 @@ class AdminController extends Controller
                 ])->render();
     
                 $response = Http::withHeaders([
-                    'Authorization' => 'zYrwBIfakpqS2Vm5dL2wbiknSDiXMQqbpiCdljaQHZ0itwGxsB3qCRRQnHcmMebf',
+                    'Authorization' => 'AVb6fbZFLZOVHPyUZzE2V8YB6kJtsdRaG4jhne6E96iSO0oIcm2fkJNvMENonROx',
                 ])->attach('image', file_get_contents($tempJpgFilePath), 'QR_Code.jpg')
-                    ->post('https://jkt.wablas.com/api/send-image', [
+                    ->post('https://pati.wablas.com/api/send-image', [
                         'phone' => $registration->phone,
                         'caption' => $message,
-                        'image' => 'https://pendaftaranwisuda.unsia.ac.id/denahwisuda.png',
                     ]);
     
                 if ($response->successful()) {

@@ -1,6 +1,4 @@
-*Desain Undangan Wisudawan/Wati – Terlampir*
-*Denah Pendaftaran Wisuda https://pendaftaranwisuda.unsia.ac.id/denahwisuda.pdf*
-*Copies Undangan Wisuda Onsite*
+*Denah Wisuda https://bit.ly/3CY0L8Z*
 
 *Kepada Yth.*
 {{ $name }}
@@ -31,6 +29,14 @@ Holis: (+62) 812-1898-7353
 *Nomor duduk Anda adalah {{ $seat_number }}*
 *Kode Unik untuk Keluarga Pendamping adalah {{ $kode_unik }}*
 Mohon pastikan kode unik ini diinformasikan kepada keluarga pendamping untuk kelancaran proses pendaftaran.
-*Scan Barcode Wisudawan/Wati – Terlampir*
 *Tata Tertib Wisudawan/Wati secara Onsite >> https://bit.ly/3ZDSEr2*
 *Petunjuk Masuk Acara Wisuda Khusus Wisudawan/Wati secara Onsite >> https://bit.ly/3OJ9T41*
+*Petunjuk Masuk Acara Wisuda Khusus Keluarga Pendamping & Tambahan >> https://bit.ly/3OJ9T41*
+*Rekomendasi Akomodasi Penginapan >> https://bit.ly/49s3HqK*
+
+Imbauan
+Imbauan:
+Selama acara wisuda berlangsung, Calon Wisudawan/Wati tidak diperkenankan makan hingga acara selesai. Kami menyarankan agar Calon Wisudawan/Wati sarapan terlebih dahulu di pagi hari. Untuk snack dapat dititipkan kepada keluarga yang mendampingi.
+Bagi Keluarga Pendamping & Tambahan selama acara wisuda berlangsung, dimohon untuk menjaga ketertiban dan ketenangan hingga acara selesai.
+Harap membuang sampah pada tempat yang telah disediakan untuk menjaga kebersihan lokasi acara Wisuda.
+*FAQ Wisuda UNSIA >> https://bit.ly/41llBcy*
