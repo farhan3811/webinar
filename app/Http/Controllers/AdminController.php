@@ -248,7 +248,7 @@ class AdminController extends Controller
                 ])->render();
     
                 $response = Http::withHeaders([
-                    'Authorization' => '1E3I7ZeAfw01KXQT2TgG4Lgo3GOVlkkdcjKDS38VqgVdLeB6uJYIayaDLvIkjciK',
+                    'Authorization' => 'zYrwBIfakpqS2Vm5dL2wbiknSDiXMQqbpiCdljaQHZ0itwGxsB3qCRRQnHcmMebf',
                 ])->attach('image', file_get_contents($tempJpgFilePath), 'QR_Code.jpg')
                     ->post('https://jkt.wablas.com/api/send-image', [
                         'phone' => $registration->phone,

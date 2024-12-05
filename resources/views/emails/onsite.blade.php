@@ -6,9 +6,9 @@
     <title>Undangan Wisuda</title>
 </head>
 <body>
-    <p><strong>1. Desain Undangan Wisudawan/Wati – Terlampir</strong></p>
-    <p><strong>2. Denah Pendaftaran Wisuda</strong></p>
-    <p><strong>3. Copies Undangan Wisuda Onsite</strong></p>
+    <p><strong>Desain Undangan Wisudawan/Wati – Terlampir</strong></p>
+    <p><strong>Denah Pendaftaran Wisuda</strong></p>
+    <p><strong>Copies Undangan Wisuda Onsite</strong></p>
 
     <p><strong>Kepada Yth.</strong><br>
     {{ $registration->name }}<br>
@@ -38,11 +38,11 @@
 
     <p><img src="{{ $message->embed($barcodePath) }}" alt="QR Code"></p>
 
-    <p><strong>4. Nomor duduk Anda adalah {{ $registration->seat_number }}</strong></p>
-    <p><strong>5. Kode Unik untuk Keluarga Pendamping adalah {{ $registration->kode_unik }}</strong><br>
+    <p><strong>Nomor duduk Anda adalah {{ $registration->seat_number }}</strong></p>
+    <p><strong>Kode Unik untuk Keluarga Pendamping adalah {{ $registration->kode_unik }}</strong><br>
     Mohon pastikan kode unik ini diinformasikan kepada keluarga pendamping untuk kelancaran proses pendaftaran.</p>
-    <p><strong>6. Scan Barcode Wisudawan/Wati – Terlampir</strong></p>
-    <p><strong>7. Tata Tertib Wisudawan/Wati secara Onsite >> <a href="https://bit.ly/3ZDSEr2">Tata Tertib</a></strong></p>
-    <p><strong>8. Petunjuk Masuk Acara Wisuda Khusus Wisudawan/Wati secara Onsite >> <a href="https://bit.ly/3OJ9T41">Petunjuk Masuk</a></strong></p>
+    <p><strong>Scan Barcode Wisudawan/Wati – Terlampir</strong></p>
+    <p><strong>Tata Tertib Wisudawan/Wati secara Onsite >> <a href="https://bit.ly/3ZDSEr2">Tata Tertib</a></strong></p>
+    <p><strong>Petunjuk Masuk Acara Wisuda Khusus Wisudawan/Wati secara Onsite >> <a href="https://bit.ly/3OJ9T41">Petunjuk Masuk</a></strong></p>
 </body>
 </html>
