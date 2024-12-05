@@ -1,5 +1,5 @@
 *Desain Undangan Wisudawan/Wati – Terlampir*
-*Denah Pendaftaran Wisuda*
+*Denah Pendaftaran Wisuda https://pendaftaranwisuda.unsia.ac.id/denahwisuda.pdf*
 *Copies Undangan Wisuda Onsite*
 
 *Kepada Yth.*
