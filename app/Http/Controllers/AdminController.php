@@ -36,6 +36,7 @@ class AdminController extends Controller
             'kode_unik' => $registration->kode_unik,
             'nim' => $registration->nim,
             'name' => $registration->name,
+            'program_studi' => $registration->program_studi,
             'email' => $registration->email,
         ];
 
