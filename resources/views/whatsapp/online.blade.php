@@ -13,6 +13,9 @@ Waktu: 08:00 s.d 12:30 WIB
 Tempat: ONLINE (ZOOM)
 Link Zoom: https://bit.ly/WisudaUnsia2 
 Meeting ID: 975 0128 8579
+
+![Undangan Wisuda](https://pendaftaranwisuda.unsia.ac.id/denahwisuda.png)
+
 Virtual Background Zoom: https://bit.ly/BGZoomWisudaUnsia2 
 Link Scan QR Code Absensi Wisuda: https://bit.ly/3VmvEui 
 Live Streaming YouTube: https://youtube.com/live/dr01Tjfc14Q?feature=share 
