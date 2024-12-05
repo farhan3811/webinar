@@ -84,17 +84,31 @@ class AdminController extends Controller
         }
         // Kirim WhatsApp
         try {
+            // Kirim gambar QR code
             Http::withHeaders([
-                'Authorization' => '1E3I7ZeAfw01KXQT2TgG4Lgo3GOVlkkdcjKDS38VqgVdLeB6uJYIayaDLvIkjciK',
+                'Authorization' => 'zYrwBIfakpqS2Vm5dL2wbiknSDiXMQqbpiCdljaQHZ0itwGxsB3qCRRQnHcmMebf',
             ])->attach('image', file_get_contents($tempJpgFilePath), 'QR_Code.jpg')
-                ->post('https://jkt.wablas.com/api/send-image', [
-                    'phone' => $registration->phone,
-                    'caption' => $message,
-                    'image' => 'https://pendaftaranwisuda.unsia.ac.id/denahwisuda.png',
-                ]);
+              ->post('https://jkt.wablas.com/api/send-image', [
+                  'phone' => $registration->phone,
+                  'caption' => $message,
+                  'image' => 'https://pendaftaranwisuda.unsia.ac.id/denahwisuda.png',
+              ]);
+        
+            // Periksa apakah peserta onsite
+            if ($registration->attendance == 'onsite') {
+                // Kirim PDF undangan wisuda
+                Http::withHeaders([
+                    'Authorization' => 'zYrwBIfakpqS2Vm5dL2wbiknSDiXMQqbpiCdljaQHZ0itwGxsB3qCRRQnHcmMebf',
+                ])->attach('document', file_get_contents('https://pendaftaranwisuda.unsia.ac.id/denahwisuda.pdf'), 'denahwisuda.pdf')
+                  ->post('https://jkt.wablas.com/api/send-document', [
+                      'phone' => $registration->phone,
+                      'caption' => 'Undangan Wisuda Universitas Siber Asia',
+                  ]);
+            }
         } catch (\Exception $e) {
             Log::error('Error WhatsApp: ' . $e->getMessage());
         }
+        
 
         return redirect()->route('datamahasiswa')->with('success', 'Pendaftaran berhasil diapprove.');
     }
