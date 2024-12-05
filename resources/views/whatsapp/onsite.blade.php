@@ -34,5 +34,5 @@ Holis: (+62) 812-1898-7353
 *5.Kode Unik untuk Keluarga Pendamping adalah {{ $kode_unik }}*
 Mohon pastikan kode unik ini diinformasikan kepada keluarga pendamping untuk kelancaran proses pendaftaran.
 *6.Scan Barcode Wisudawan/Wati – Terlampir*
-*7.Tata Tertib Wisudawan/Wati secara Onsite >> https://*
-*8.Petunjuk Masuk Acara Wisuda Khusus Wisudawan/Wati secara Onsite >> https://*
+*7.Tata Tertib Wisudawan/Wati secara Onsite >> https://bit.ly/3ZDSEr2*
+*8.Petunjuk Masuk Acara Wisuda Khusus Wisudawan/Wati secara Onsite >> https://bit.ly/3OJ9T41*
