@@ -54,6 +54,7 @@
         const video = document.getElementById('qr-video');
         const modal = document.getElementById('modal');
         const resultElement = document.getElementById('modal-content');
+        const kodeUnikElement = document.getElementById('kode_unik');
         const nameElement = document.getElementById('name');
         const nimElement = document.getElementById('nim');
         const emailElement = document.getElementById('email');
