@@ -28,8 +28,6 @@ Universitas Siber Asia
 Fian: (+62) 815-1469-6934
 Holis: (+62) 812-1898-7353
 
-<img src="{{ $message->embed($barcodePath) }}" alt="QR Code">
-
 *Nomor duduk Anda adalah {{ $seat_number }}*
 *Kode Unik untuk Keluarga Pendamping adalah {{ $kode_unik }}*
 Mohon pastikan kode unik ini diinformasikan kepada keluarga pendamping untuk kelancaran proses pendaftaran.
