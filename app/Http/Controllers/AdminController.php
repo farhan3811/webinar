@@ -31,29 +31,26 @@ class AdminController extends Controller
         $registration = Registration::findOrFail($id);
         $registration->status = 'approved';
         $registration->save();
-
+    
         $qrData = [
             'kode_unik' => $registration->kode_unik,
             'nim' => $registration->nim,
             'name' => $registration->name,
             'email' => $registration->email,
         ];
-
+    
         $qrString = json_encode($qrData);
         $tempPngFilePath = storage_path('app/public/qr_codes/' . $registration->nim . '.png');
-
         QrCode::format('png')->margin(5)->backgroundColor(255, 255, 255)->size(400)->generate($qrString, $tempPngFilePath);
-
+    
         $tempJpgFilePath = str_replace('.png', '.jpg', $tempPngFilePath);
         $image = imagecreatefrompng($tempPngFilePath);
         imagejpeg($image, $tempJpgFilePath);
         imagedestroy($image);
-        $templateWhatsApp = $registration->graduation_type === 'online' ?
-            'whatsapp.online' : 'whatsapp.onsite';
-
+    
+        $templateWhatsApp = $registration->graduation_type === 'online' ? 'whatsapp.online' : 'whatsapp.onsite';
         $templateEmail = $registration->graduation_type === 'online' ? 'emails.online' : 'emails.onsite';
-
-
+    
         $message = view($templateWhatsApp, [
             'name' => $registration->name,
             'nim' => $registration->nim,
@@ -62,9 +59,8 @@ class AdminController extends Controller
             'graduation_type' => $registration->graduation_type,
             'seat_number' => $registration->seat_number,
             'kode_unik' => $registration->kode_unik,
-            
         ])->render();
-
+    
         try {
             Mail::to($registration->email)->send(new RegistrationApproved($registration, $tempJpgFilePath, $templateEmail));
             EmailLog::create([
@@ -82,9 +78,8 @@ class AdminController extends Controller
             ]);
             Log::error('Gagal mengirim email ke ' . $registration->email . ': ' . $e->getMessage());
         }
-        // Kirim WhatsApp
+    
         try {
-            // Kirim gambar QR code
             Http::withHeaders([
                 'Authorization' => 'zYrwBIfakpqS2Vm5dL2wbiknSDiXMQqbpiCdljaQHZ0itwGxsB3qCRRQnHcmMebf',
             ])->attach('image', file_get_contents($tempJpgFilePath), 'QR_Code.jpg')
@@ -93,25 +88,28 @@ class AdminController extends Controller
                   'caption' => $message,
                   'image' => 'https://pendaftaranwisuda.unsia.ac.id/denahwisuda.png',
               ]);
-        
-            // Periksa apakah peserta onsite
+    
             if ($registration->attendance == 'onsite') {
-                // Kirim PDF undangan wisuda
-                Http::withHeaders([
-                    'Authorization' => 'zYrwBIfakpqS2Vm5dL2wbiknSDiXMQqbpiCdljaQHZ0itwGxsB3qCRRQnHcmMebf',
-                ])->attach('document', file_get_contents('https://pendaftaranwisuda.unsia.ac.id/denahwisuda.pdf'), 'denahwisuda.pdf')
-                  ->post('https://jkt.wablas.com/api/send-document', [
-                      'phone' => $registration->phone,
-                      'caption' => 'Undangan Wisuda Universitas Siber Asia',
-                  ]);
+                $pdfUrl = 'https://pendaftaranwisuda.unsia.ac.id/denahwisuda.pdf'; 
+                if (@fopen($pdfUrl, 'r')) {
+                    Http::withHeaders([
+                        'Authorization' => 'zYrwBIfakpqS2Vm5dL2wbiknSDiXMQqbpiCdljaQHZ0itwGxsB3qCRRQnHcmMebf',
+                    ])->attach('document', file_get_contents($pdfUrl), 'denahwisuda.pdf')
+                      ->post('https://jkt.wablas.com/api/send-document', [
+                          'phone' => $registration->phone,
+                          'caption' => 'Undangan Wisuda Universitas Siber Asia',
+                      ]);
+                } else {
+                    Log::error("PDF file not found: $pdfUrl");
+                }
             }
         } catch (\Exception $e) {
             Log::error('Error WhatsApp: ' . $e->getMessage());
         }
-        
-
+    
         return redirect()->route('datamahasiswa')->with('success', 'Pendaftaran berhasil diapprove.');
     }
+    
 
 
     public function scanQr()
