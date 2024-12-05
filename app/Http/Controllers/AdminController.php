@@ -90,6 +90,7 @@ class AdminController extends Controller
                 ->post('https://jkt.wablas.com/api/send-image', [
                     'phone' => $registration->phone,
                     'caption' => $message,
+                    'image' => 'https://pendaftaranwisuda.unsia.ac.id/denahwisuda.png',
                 ]);
         } catch (\Exception $e) {
             Log::error('Error WhatsApp: ' . $e->getMessage());
