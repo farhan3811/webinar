@@ -1,5 +1,5 @@
 *Undangan Wisuda Onsite https://bit.ly/3Zl8OUN*
-*Denah Wisuda https://bit.ly/3CY0L8Z*
+*Denah Pendaftaran Wisuda https://bit.ly/3CY0L8Z*
 
 *Kepada Yth.*
 {{ $name }}
