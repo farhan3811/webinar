@@ -1,3 +1,5 @@
+*Undangan Wisuda Online https://bit.ly/3Zp8KTX*
+
 *Kepada Yth.*
 {{ $name }}
 Program Studi {{ $program_studi }}
