@@ -21,7 +21,7 @@
     Waktu: 08:00 s.d 12:30 WIB<br>
     <strong>Tempat: ONLINE (ZOOM)</strong><br>
     Link Zoom: <a href="https://bit.ly/WisudaUnsia2" target="_blank">https://bit.ly/WisudaUnsia2</a><br>
-    Meeting ID: 975 0128 8579</p>
+    <p>Meeting ID: 975 0128 8579</p>
     <p>Virtual Background Zoom: <a href="https://bit.ly/BGZoomWisudaUnsia2" target="_blank">https://bit.ly/BGZoomWisudaUnsia2</a>
     Live Streaming YouTube: <a href="https://youtube.com/live/dr01Tjfc14Q?feature=share" target="_blank">https://youtube.com/live/dr01Tjfc14Q?feature=share</a></p>
 <br>
