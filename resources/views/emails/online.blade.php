@@ -20,7 +20,6 @@
     <strong>Tempat:</strong> ONLINE (ZOOM)<br>
     <strong>Link Zoom:</strong> <a href="https://bit.ly/WisudaUnsia2" target="_blank">https://bit.ly/WisudaUnsia2</a><br>
     <strong>Meeting ID:</strong> 975 0128 8579</p>
-
     <p><strong>Virtual Background Zoom:</strong> <a href="https://bit.ly/BGZoomWisudaUnsia2" target="_blank">https://bit.ly/BGZoomWisudaUnsia2</a><br>
     <strong>Live Streaming YouTube:</strong> <a href="https://youtube.com/live/dr01Tjfc14Q?feature=share" target="_blank">https://youtube.com/live/dr01Tjfc14Q?feature=share</a></p>
 
@@ -38,8 +37,10 @@
     Fian: (+62) 815-1469-6934<br>
     Holis: (+62) 812-1898-7353</p>
 
-    <p><strong><a href="https://bit.ly/3ZDSEr2" target="_blank">Tata Tertib Wisudawan/Wati secara Online</a></strong><br>
-    <strong><a href="https://bit.ly/3OJ9T41" target="_blank">Petunjuk Masuk Acara Wisuda Khusus Wisudawan/Wati secara Online</a></strong><br>
-    <strong><a href="https://bit.ly/49s3HqK" target="_blank">FAQ Wisuda UNSIA</a></strong></p>
+    <p><stong>Silakan simak informasi terkait wisuda online berikut ini. Sampai bertemu pada acara Wisuda Universitas Siber Asia Periode 2</stong></p>
+<br>
+    <p><a href="https://bit.ly/3ZDSEr2" target="_blank">Tata Tertib Wisudawan/Wati secara Online</a><br>
+    <a href="https://bit.ly/3OJ9T41" target="_blank">Petunjuk Masuk Acara Wisuda Khusus Wisudawan/Wati secara Online</a><br>
+    <a href="https://bit.ly/41llBcy" target="_blank">FAQ Wisuda UNSIA</a></p>
 </body>
 </html>

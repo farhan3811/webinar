@@ -85,18 +85,16 @@ class AdminController extends Controller
         }
         try {
             $response = Http::withHeaders([
-                'Authorization' => '1E3I7ZeAfw01KXQT2TgG4Lgo3GOVlkkdcjKDS38VqgVdLeB6uJYIayaDLvIkjciK',
+                'Authorization' => 'L1kGX9iZF1QrRnMt0EpxCLxO3AcJlr5zMoqTJrCrhiSt1hj43NbY7cfqMWtMiprE',
             ])->attach('image', file_get_contents($tempJpgFilePath), 'QR_Code.jpg')
                 ->post('https://jkt.wablas.com/api/send-image', [
                     'phone' => $registration->phone,
                     'caption' => $message,
                 ]);
         
-            // Log the response if needed
             if ($response->successful()) {
                 Log::info('WhatsApp image sent successfully to ' . $registration->phone);
             } else {
-                // Log failed request
                 Log::error('Failed to send WhatsApp image. Response: ' . $response->body());
             }
         } catch (\Exception $e) {
@@ -251,21 +249,21 @@ class AdminController extends Controller
                 ])->render();
     
                 $response = Http::withHeaders([
-                    'Authorization' => 'AVb6fbZFLZOVHPyUZzE2V8YB6kJtsdRaG4jhne6E96iSO0oIcm2fkJNvMENonROx',
+                    'Authorization' => 'L1kGX9iZF1QrRnMt0EpxCLxO3AcJlr5zMoqTJrCrhiSt1hj43NbY7cfqMWtMiprE',
                 ])->attach('image', file_get_contents($tempJpgFilePath), 'QR_Code.jpg')
-                    ->post('https://pati.wablas.com/api/send-image', [
+                    ->post('https://jkt.wablas.com/api/send-image', [
                         'phone' => $registration->phone,
                         'caption' => $message,
                     ]);
     
-                if ($response->successful()) {
-                    Log::info('Pesan WhatsApp berhasil dikirim ke ' . $registration->phone);
-                } else {
-                    Log::error('Gagal mengirim WhatsApp: ' . $response->body());
+                    if ($response->successful()) {
+                        Log::info('WhatsApp image sent successfully to ' . $registration->phone);
+                    } else {
+                        Log::error('Failed to send WhatsApp image. Response: ' . $response->body());
+                    }
+                } catch (\Exception $e) {
+                    Log::error('Error WhatsApp: ' . $e->getMessage());
                 }
-            } catch (\Exception $e) {
-                Log::error('Error saat mengirim WhatsApp: ' . $e->getMessage());
-            }
         }
     
         return response()->json(['success' => true]);
