@@ -6,6 +6,8 @@
     <title>Undangan Wisuda</title>
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; color: #333;">
+    <p><a href="https://bit.ly/3Zp8KTX">Undangan Wisuda Online</a></p>
+    <br>
     <p>Kepada Yth.<br>
     <strong>{{ $registration->name }}</strong><br>
     Program Studi {{ $registration->program_studi }}<br>

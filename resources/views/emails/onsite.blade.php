@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <p><a href="https://bit.ly/3Zl8OUN">Undangan Wisudawan</a></p>
+    <p><a href="https://bit.ly/3Zl8OUN">Undangan Wisuda</a></p>
     <p><a href="https://bit.ly/3CY0L8Z">Denah Wisuda</a></p>
 
     <p><strong>Kepada Yth.</strong><br>

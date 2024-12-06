@@ -1,4 +1,4 @@
-*Undangan Wisudawan Onsite https://bit.ly/3Zl8OUN*
+*Undangan Wisuda Onsite https://bit.ly/3Zl8OUN*
 *Denah Wisuda https://bit.ly/3CY0L8Z*
 
 *Kepada Yth.*
