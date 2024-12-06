@@ -19,10 +19,10 @@
 
     <p>Hari, Tanggal: Minggu, 08 Desember 2024<br>
     Waktu: 08:00 s.d 12:30 WIB<br>
-    <strong>Tempat:</strong> ONLINE (ZOOM)<br>
+    <strong>Tempat: ONLINE (ZOOM)</strong><br>
     Link Zoom: <a href="https://bit.ly/WisudaUnsia2" target="_blank">https://bit.ly/WisudaUnsia2</a><br>
     Meeting ID: 975 0128 8579</p>
-    <p>Virtual Background Zoom: <a href="https://bit.ly/BGZoomWisudaUnsia2" target="_blank">https://bit.ly/BGZoomWisudaUnsia2</a><br>
+    <p>Virtual Background Zoom: <a href="https://bit.ly/BGZoomWisudaUnsia2" target="_blank">https://bit.ly/BGZoomWisudaUnsia2</a>
     Live Streaming YouTube: <a href="https://youtube.com/live/dr01Tjfc14Q?feature=share" target="_blank">https://youtube.com/live/dr01Tjfc14Q?feature=share</a></p>
 <br>
     <p>Kami berharap kehadiran Saudara/i dapat memeriahkan acara ini dan menjadikannya momen berharga dalam hidup Saudara/i.</p>
