@@ -13,14 +13,12 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Membuat pengguna admin
         User::create([
             'name' => 'Farhan',
             'email' => 'muhammadfarhan@staff.unsia.ac.id',
-            'password' => Hash::make('secret123'), // Gunakan Hash untuk menyimpan password yang aman
+            'password' => Hash::make('secret123'), 
         ]);
 
-        // Membuat pengguna biasa
         User::create([
             'name' => 'Regular User',
             'email' => 'user@example.com',
