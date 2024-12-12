@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Farhan',
             'email' => 'muhammadfarhan@staff.unsia.ac.id',
-            'password' => Hash::make('wartam7317'), // Gunakan Hash untuk menyimpan password yang aman
+            'password' => Hash::make('secret123'), // Gunakan Hash untuk menyimpan password yang aman
         ]);
 
         // Membuat pengguna biasa
