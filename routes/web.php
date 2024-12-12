@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::post('/admin/import-excel', [AdminController::class, 'importExcel'])->name('admin.importExcel');
 Route::get('registration', [RegistrationController::class, 'showForm']);
 Route::post('registration', [RegistrationController::class, 'store'])->name('registration.store');
 Route::post('/admin/check-in/{nim}', [AdminController::class, 'checkIn'])->name('admin.checkIn');

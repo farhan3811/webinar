@@ -13,25 +13,25 @@ return new class extends Migration
     {
         Schema::create('registrations', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('phone');
-            $table->string('email');
-            $table->string('program_studi');
-            $table->string('nim');
-            $table->string('graduation_type');
-            $table->string('toga_size');
-            $table->string('delivery', 255);
+            $table->string('name')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('program_studi')->nullable();
+            $table->string('nim')->nullable();
+            $table->string('graduation_type')->nullable();
+            $table->string('toga_size')->nullable();
+            $table->string('delivery', 255)->nullable();
             $table->text('address')->nullable();
             $table->string('city')->nullable();
             $table->string('province')->nullable();
             $table->string('postal_code')->nullable();
-            $table->string('graduation_payment_file');
+            $table->string('graduation_payment_file')->nullable();
             $table->string('family_payment_file')->nullable();
-            $table->enum('status', ['pending', 'approved'])->default('pending');
+            $table->enum('status', ['pending', 'approved'])->default('pending')->nullable();
             $table->timestamps();
         });
     }
-    
+
     /**
      * Reverse the migrations.
      */

@@ -18,9 +18,18 @@
                         <form action="{{ route('admin.exportExcel') }}" method="GET" class="ml-4 inline">
                             <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Export Excel</button>
                         </form>
-                        <a href="{{ route('admin.scanQr') }}" class="ml-4 px-4 py-2 bg-rose-500 text-white rounded">
-                            Scan QR
-                        </a>
+                        <div class="py-4">
+                            @if (session('success'))
+                                <div class="bg-green-100 text-green-800 p-4 rounded">
+                                    {{ session('success') }}
+                                </div>
+                            @elseif (session('error'))
+                                <div class="bg-red-100 text-red-800 p-4 rounded">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
+                        </div>
+
                         <button onclick="approveSelected()"
                             class="px-4 py-2 bg-green-500 text-white rounded ml-4">Approve All</button>
                     </div>
@@ -31,15 +40,9 @@
                                     <th class="px-4 py-2 border-b">
                                         <input type="checkbox" id="select-all" onclick="toggleSelectAll(this)" />
                                     </th>
-                                    <th class="px-4 py-2 border-b">Kode Unik</th>
                                     <th class="px-4 py-2 border-b">Nama</th>
                                     <th class="px-4 py-2 border-b">Email</th>
-                                    <th class="px-4 py-2 border-b">NIM</th>
-                                    <th class="px-4 py-2 border-b">Program Studi</th>
-                                    <th class="px-4 py-2 border-b">Kehadiran</th>
                                     <th class="px-4 py-2 border-b">Status</th>
-                                    <th class="px-16 py-2 border-b">Status Check-in</th>
-                                    <th class="px-16 py-2 border-b">Waktu Check-in</th>
                                     <th class="px-4 py-2 border-b">Aksi</th>
                                 </tr>
                             </thead>
@@ -53,36 +56,16 @@
                                         </td>
 
                                         <!-- Data fields -->
-                                        <td class="px-4 py-2 border-b">{{ $registration->kode_unik }}</td>
                                         <td class="px-4 py-2 border-b">{{ $registration->name }}</td>
                                         <td class="px-4 py-2 border-b">{{ $registration->email }}</td>
-                                        <td class="px-4 py-2 border-b">{{ $registration->nim }}</td>
-                                        <td class="px-4 py-2 border-b">{{ $registration->program_studi }}</td>
-                                        <td class="px-4 py-2 border-b">{{ $registration->graduation_type }}</td>
 
                                         <!-- Status -->
                                         <td class="px-4 py-2 border-b text-center">
                                             <span
                                                 class="inline-block px-2 py-1 text-sm font-semibold rounded-full 
-                                            {{ $registration->status == 'approved' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800' }}">
+                                                    {{ $registration->status == 'approved' ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800' }}">
                                                 {{ ucfirst($registration->status) }}
                                             </span>
-                                        </td>
-
-                                        <!-- Status Check-in -->
-                                        <td class="px-4 py-2 border-b text-center">
-                                            @if ($registration->checked_in)
-                                                <span class="bg-green-200 text-green-800 px-2 py-1 rounded-full">Sudah
-                                                    Check-in</span>
-                                            @else
-                                                <span class="bg-red-200 text-red-800 px-2 py-1 rounded-full">Belum
-                                                    Check-in</span>
-                                            @endif
-                                        </td>
-
-                                        <!-- Waktu Check-in -->
-                                        <td class="px-4 py-2 border-b text-center">
-                                            {{ $registration->check_in_date ? $registration->check_in_date->format('d-m-Y H:i:s') : '-' }}
                                         </td>
 
                                         <!-- Aksi -->
@@ -144,14 +127,6 @@
                 @method('PUT')
                 <input type="hidden" id="edit-id">
 
-                <!-- Kode Unik -->
-                <div>
-                    <label for="edit-kode_unik" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kode
-                        Unik</label>
-                    <input type="text" id="edit-kode_unik" name="kode_unik"
-                        class="form-input w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
-                </div>
-
                 <!-- Nama -->
                 <div>
                     <label for="edit-name"
@@ -160,13 +135,6 @@
                         class="form-input w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
                 </div>
 
-                <!-- No Handphone -->
-                <div>
-                    <label for="edit-phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No
-                        Handphone Aktif</label>
-                    <input type="text" id="edit-phone" name="phone"
-                        class="form-input w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
-                </div>
 
                 <!-- Email -->
                 <div>
@@ -175,109 +143,7 @@
                     <input type="email" id="edit-email" name="email"
                         class="form-input w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
                 </div>
-
-                <!-- NIM -->
-                <div>
-                    <label for="edit-nim" class="block text-sm font-medium text-gray-700 dark:text-gray-300">NIM</label>
-                    <input type="text" id="edit-nim" name="nim"
-                        class="form-input w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
-                </div>
-
-                <!-- Program Studi -->
-                <div>
-                    <label for="edit-program_studi"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Program Studi</label>
-                    <select id="edit-program_studi" name="program_studi"
-                        class="form-select w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
-                        <option value="">-- Pilih Program Studi --</option>
-                        <option value="Informatika">Informatika</option>
-                        <option value="Sistem Informasi">Sistem Informasi</option>
-                        <option value="Komunikasi">Komunikasi</option>
-                        <option value="Akuntansi">Akuntansi</option>
-                        <option value="Manajemen">Manajemen</option>
-                    </select>
-                </div>
-
-                <!-- Ukuran Toga -->
-                <div>
-                    <label for="edit-toga_size"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ukuran Toga</label>
-                    <select id="edit-toga_size" name="toga_size"
-                        class="form-select w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
-                        <option value="">-- Pilih Ukuran Toga --</option>
-                        <option value="S">S</option>
-                        <option value="M">M</option>
-                        <option value="L">L</option>
-                        <option value="XL">XL</option>
-                        <option value="XXL">XXL</option>
-                    </select>
-                </div>
-
-                <!-- Status -->
-                <div>
-                    <label for="edit-graduation_type"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
-                    <select id="edit-graduation_type" name="graduation_type"
-                        class="form-select w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
-                        <option value="">Pilih Status</option>
-                        <option value="online">Online</option>
-                        <option value="onsite">Onsite</option>
-                    </select>
-                </div>
-
-                <!-- Pengiriman -->
-                <div>
-                    <label for="edit-delivery"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Pengiriman</label>
-                    <select id="edit-delivery" name="delivery"
-                        class="form-select w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200">
-                        <option value="">Pilih Pengiriman</option>
-                        <option value="Dikirim">Dikirim</option>
-                        <option value="Ambil di Kampus Universitas Siber Asia">Ambil di Kampus Universitas Siber Asia
-                        </option>
-                    </select>
-                </div>
-
-                <!-- Alamat -->
-                <div>
-                    <label for="edit-address"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Alamat</label>
-                    <textarea id="edit-address" name="address" rows="2"
-                        class="form-textarea w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200"></textarea>
-                </div>
-                <div>
-                    <label for="edit-province"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Provinsi</label>
-                    <textarea id="edit-province" name="province" rows="2"
-                        class="form-textarea w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200"></textarea>
-                </div>
-
-                <div>
-                    <label for="edit-city"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kota</label>
-                    <textarea id="edit-city" name="city" rows="2"
-                        class="form-textarea w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200"></textarea>
-                </div>
-
-                <div>
-                    <label for="edit-postal_code"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kode Pos</label>
-                    <textarea id="edit-postal_code" name="postal_code" rows="2"
-                        class="form-textarea w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200"></textarea>
-                </div>
-
-                <div>
-                    <label for="edit-pendamping"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jumlah Pendamping</label>
-                    <textarea id="edit-pendamping" name="pendamping" rows="2"
-                        class="form-textarea w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200"></textarea>
-                </div>
-                <div>
-                    <label for="edit-seat_number"
-                        class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nomor Kursi</label>
-                    <textarea id="edit-seat_number" name="seat_number" rows="2"
-                        class="form-textarea w-full border-gray-300 dark:border-gray-600 rounded-md focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-gray-200"></textarea>
-                </div>
+                >
                 <!-- Tombol Aksi -->
                 <div class="flex justify-end space-x-4">
                     <button type="button" onclick="closeModal()"
@@ -295,21 +161,8 @@
     <script>
         function openEditModal(data) {
             document.getElementById('edit-id').value = data.id;
-            document.getElementById('edit-kode_unik').value = data.kode_unik;
             document.getElementById('edit-name').value = data.name;
-            document.getElementById('edit-phone').value = data.phone;
             document.getElementById('edit-email').value = data.email;
-            document.getElementById('edit-nim').value = data.nim;
-            document.getElementById('edit-program_studi').value = data.program_studi;
-            document.getElementById('edit-address').value = data.address;
-            document.getElementById('edit-province').value = data.province;
-            document.getElementById('edit-postal_code').value = data.postal_code;
-            document.getElementById('edit-graduation_type').value = data.graduation_type;
-            document.getElementById('edit-toga_size').value = data.toga_size;
-            document.getElementById('edit-pendamping').value = data.pendamping;
-            document.getElementById('edit-seat_number').value = data.seat_number;
-            document.getElementById('edit-delivery').value = data.delivery;
-            document.getElementById('edit-city').value = data.city;
             document.getElementById('editModal').classList.remove('hidden');
         }
 
@@ -411,7 +264,5 @@
                 alert('Tidak ada data yang dipilih.');
             }
         }
-
-
     </script>
 </x-app-layout>
