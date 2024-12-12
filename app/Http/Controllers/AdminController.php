@@ -12,6 +12,8 @@ use App\Models\Registration;
 use App\Models\EmailLog;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use App\Imports\RegistrationsImport;
+use Illuminate\Support\Facades\Session;
 
 
 class AdminController extends Controller
@@ -25,49 +27,43 @@ class AdminController extends Controller
     {
         return Excel::download(new RegistrationsExport, 'registrations.xlsx');
     }
-
     public function approve($id)
     {
         $registration = Registration::findOrFail($id);
         $registration->status = 'approved';
         $registration->save();
+    
+        $path = public_path('sertif/sertif.jpeg');
+        if (!file_exists($path)) {
+            return redirect()->route('datamahasiswa')->with('error', 'Gambar sertifikat tidak ditemukan.');
+        }
+        $image = imagecreatefromjpeg($path);
+    
+        $textColor = imagecolorallocate($image, 7, 97, 167);
 
-        $qrData = [
-            'kode_unik' => $registration->kode_unik,
-            'nim' => $registration->nim,
-            'name' => $registration->name,
-            'program_studi' => $registration->program_studi,
-            'email' => $registration->email,
-        ];
-
-        $qrString = json_encode($qrData);
-        $tempPngFilePath = storage_path('app/public/qr_codes/' . $registration->nim . '.png');
-
-        QrCode::format('png')->margin(5)->backgroundColor(255, 255, 255)->size(400)->generate($qrString, $tempPngFilePath);
-
-        $tempJpgFilePath = str_replace('.png', '.jpg', $tempPngFilePath);
-        $image = imagecreatefrompng($tempPngFilePath);
-        imagejpeg($image, $tempJpgFilePath);
+        $fontSize = 40;
+        $fontPath = public_path('fonts/DejaVuSansCondensed.ttf');
+    
+        $text = $registration->name;
+        $xPosition = (imagesx($image) - strlen($text) * $fontSize) / 1.6;
+        $yPosition = 275;
+    
+        imagettftext($image, $fontSize, 0, $xPosition, $yPosition, $textColor, $fontPath, $text);
+    
+        $modifiedCertificatePath = storage_path('app/public/modified_certificates/' . $registration->nim . '_certificate.png');
+        if (!file_exists(storage_path('app/public/modified_certificates'))) {
+            mkdir(storage_path('app/public/modified_certificates'), 0777, true);
+        }
+    
+        imagepng($image, $modifiedCertificatePath);
+    
         imagedestroy($image);
-        $templateWhatsApp = $registration->graduation_type === 'online' ?
-            'whatsapp.online' : 'whatsapp.onsite';
-
+    
         $templateEmail = $registration->graduation_type === 'online' ? 'emails.online' : 'emails.onsite';
-
-
-        $message = view($templateWhatsApp, [
-            'name' => $registration->name,
-            'nim' => $registration->nim,
-            'phone' => $registration->phone,
-            'program_studi' => $registration->program_studi,
-            'graduation_type' => $registration->graduation_type,
-            'seat_number' => $registration->seat_number,
-            'kode_unik' => $registration->kode_unik,
-            
-        ])->render();
-
+    
         try {
-            Mail::to($registration->email)->send(new RegistrationApproved($registration, $tempJpgFilePath, $templateEmail));
+            Mail::to($registration->email)->send(new RegistrationApproved($registration, $modifiedCertificatePath, $templateEmail));
+    
             EmailLog::create([
                 'recipient' => $registration->email,
                 'status' => 'Sukses',
@@ -83,29 +79,10 @@ class AdminController extends Controller
             ]);
             Log::error('Gagal mengirim email ke ' . $registration->email . ': ' . $e->getMessage());
         }
-        try {
-            $response = Http::withHeaders([
-                'Authorization' => 'L1kGX9iZF1QrRnMt0EpxCLxO3AcJlr5zMoqTJrCrhiSt1hj43NbY7cfqMWtMiprE',
-            ])->attach('image', file_get_contents($tempJpgFilePath), 'QR_Code.jpg')
-                ->post('https://jkt.wablas.com/api/send-image', [
-                    'phone' => $registration->phone,
-                    'caption' => $message,
-                ]);
-        
-            if ($response->successful()) {
-                Log::info('WhatsApp image sent successfully to ' . $registration->phone);
-            } else {
-                Log::error('Failed to send WhatsApp image. Response: ' . $response->body());
-            }
-        } catch (\Exception $e) {
-            Log::error('Error WhatsApp: ' . $e->getMessage());
-        }
-        
-
+    
         return redirect()->route('datamahasiswa')->with('success', 'Pendaftaran berhasil diapprove.');
     }
-
-
+    
     public function scanQr()
     {
         return view('admin.scan');
@@ -193,35 +170,41 @@ class AdminController extends Controller
         $ids = $request->input('ids');
         $registrations = Registration::whereIn('id', $ids)->get();
     
+        $modifiedCertificatePath = storage_path('app/public/modified_certificates/');
+        if (!file_exists($modifiedCertificatePath)) {
+            mkdir($modifiedCertificatePath, 0777, true);
+        }
+    
         foreach ($registrations as $registration) {
             $registration->status = 'approved';
             $registration->save();
     
-            $qrData = [
-                'nim' => $registration->nim,
-                'name' => $registration->name,
-                'email' => $registration->email,
-            ];
-            $qrString = json_encode($qrData);
-            $tempPngFilePath = storage_path('app/public/qr_codes/' . $registration->nim . '.png'); // Simpan sebagai PNG
+            $path = public_path('sertif/sertif.jpeg');
+            if (!file_exists($path)) {
+                return redirect()->route('datamahasiswa')->with('error', 'Gambar sertifikat tidak ditemukan.');
+            }
+            $image = imagecreatefromjpeg($path);
+            $textColor = imagecolorallocate($image, 7, 97, 167); 
+            $fontSize = 40;
+            $fontPath = public_path('fonts/DejaVuSansCondensed.ttf');
     
-            QrCode::format('png')
-                ->size(400)
-                ->color(0, 0, 0) 
-                ->backgroundColor(255, 255, 255) 
-                ->margin(10) 
-                ->generate($qrString, $tempPngFilePath);
+            $text = $registration->name;
+            $xPosition = (imagesx($image) - strlen($text) * $fontSize) / 1.6;
+            $yPosition = 275; 
     
-            $tempJpgFilePath = storage_path('app/public/qr_codes/' . $registration->nim . '.jpg'); // File JPG akhir
-            $image = imagecreatefrompng($tempPngFilePath); 
-            imagejpeg($image, $tempJpgFilePath);
-            imagedestroy($image); 
-    
-            $templateWhatsApp = $registration->graduation_type === 'online' ? 'whatsapp.online' : 'whatsapp.onsite';
+            imagettftext($image, $fontSize, 0, $xPosition, $yPosition, $textColor, $fontPath, $text);
+
+            $modifiedCertificatePathFile = $modifiedCertificatePath . $registration->nim . '_certificate.png';
+            imagepng($image, $modifiedCertificatePathFile);
+            imagedestroy($image);
+
             $templateEmail = $registration->graduation_type === 'online' ? 'emails.online' : 'emails.onsite';
     
+ 
             try {
-                Mail::to($registration->email)->send(new RegistrationApproved($registration, $tempJpgFilePath, $templateEmail));
+                Mail::to($registration->email)->send(new RegistrationApproved($registration, $modifiedCertificatePathFile, $templateEmail));
+    
+
                 EmailLog::create([
                     'recipient' => $registration->email,
                     'status' => 'Sukses',
@@ -229,6 +212,7 @@ class AdminController extends Controller
                     'error_message' => null,
                 ]);
             } catch (\Exception $e) {
+                // Log pengiriman email gagal
                 EmailLog::create([
                     'recipient' => $registration->email,
                     'status' => 'Gagal',
@@ -237,37 +221,11 @@ class AdminController extends Controller
                 ]);
                 Log::error('Gagal mengirim email ke ' . $registration->email . ': ' . $e->getMessage());
             }
-            try {
-                $message = view($templateWhatsApp, [
-                    'name' => $registration->name,
-                    'nim' => $registration->nim,
-                    'phone' => $registration->phone,
-                    'program_studi' => $registration->program_studi,
-                    'graduation_type' => $registration->graduation_type,
-                    'seat_number' => $registration->seat_number,
-                    'kode_unik' => $registration->kode_unik,
-                ])->render();
-    
-                $response = Http::withHeaders([
-                    'Authorization' => 'L1kGX9iZF1QrRnMt0EpxCLxO3AcJlr5zMoqTJrCrhiSt1hj43NbY7cfqMWtMiprE',
-                ])->attach('image', file_get_contents($tempJpgFilePath), 'QR_Code.jpg')
-                    ->post('https://jkt.wablas.com/api/send-image', [
-                        'phone' => $registration->phone,
-                        'caption' => $message,
-                    ]);
-    
-                    if ($response->successful()) {
-                        Log::info('WhatsApp image sent successfully to ' . $registration->phone);
-                    } else {
-                        Log::error('Failed to send WhatsApp image. Response: ' . $response->body());
-                    }
-                } catch (\Exception $e) {
-                    Log::error('Error WhatsApp: ' . $e->getMessage());
-                }
         }
     
         return response()->json(['success' => true]);
     }
+    
     
     public function updateStatus(Request $request, $id)
     {

@@ -14,23 +14,27 @@ class RegistrationApproved extends Mailable implements ShouldQueue
 
     public $registration;
     public $barcodePath;
-    public $emailView; // Menyimpan template email yang akan digunakan
+    public $emailView; 
 
-    // Menambahkan parameter emailView di konstruktor
     public function __construct(Registration $registration, $barcodePath, $emailView)
     {
         $this->registration = $registration;
         $this->barcodePath = $barcodePath;
-        $this->emailView = $emailView;  // Simpan template yang dipilih
+        $this->emailView = $emailView;  
     }
 
     public function build()
     {
         return $this->subject('Registration Approved')
-                    ->view($this->emailView)  // Gunakan template yang dipilih
+                    ->view($this->emailView)
+                    ->with([
+                        'certificatePath' => $this->barcodePath,
+                        'registration' => $this->registration,
+                    ])
                     ->attach($this->barcodePath, [
                         'as' => 'qr_code.png',
                         'mime' => 'image/png',
                     ]);
     }
+    
 }
